@@ -1,13 +1,6 @@
 package com.ohtu.wearable.wearabledataservice.server;
 
-import android.hardware.Sensor;
 import android.util.Log;
-
-import com.example.wearable.wear.controllers.FeedsController;
-import com.example.wearable.wear.models.Sensors;
-
-import java.util.HashMap;
-import java.util.List;
 
 /**
  *
@@ -19,13 +12,12 @@ public class SensorHTTPServer extends NanoHTTPD {
     /**
      * HTTP server, passes all HTTP requests to FeedsController
      *
-     * @param sensors
-     * @param sensorList
+     * @param feedsController
      */
-    public SensorHTTPServer(SensorUnit sensors, List<Sensor> sensorList)
+    public SensorHTTPServer(FeedsController feedsController)
     {
         super(8080);
-        this.feedsController = new FeedsController(sensors, sensorList);
+        this.feedsController = feedsController;
     }
 
     /**

@@ -4,13 +4,17 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.hardware.Sensor;
 import android.os.Binder;
 import android.os.IBinder;
 import android.widget.Toast;
 
+import com.ohtu.wearable.wearabledataservice.sensors.SensorsHandler;
+import com.ohtu.wearable.wearabledataservice.server.FeedsController;
 import com.ohtu.wearable.wearabledataservice.server.SensorHTTPServer;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Run SensorHTTPServer as a bound foreground service
@@ -19,6 +23,7 @@ public class SensorServerService extends Service {
 
     private boolean serverStarted = false;
     private SensorHTTPServer server;
+    private List<Sensor> activeSensors;
 
     // Binder given to clients
     private final IBinder mBinder = new LocalBinder();
@@ -40,7 +45,6 @@ public class SensorServerService extends Service {
     }
 
 
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -54,12 +58,16 @@ public class SensorServerService extends Service {
                 notification.setLatestEventInfo(this, "SENSORHTTPSERVER", "service started", pendingIntent);
                 startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, notification);
             }
-
+            //ToDo: handle server start failure
             serverStarted = startServer();
         }
 
         // If we get killed, after returning from here, restart
         return START_STICKY;
+    }
+
+    public void setSensors(List<Sensor> sensors){
+
     }
 
     /**
@@ -68,7 +76,9 @@ public class SensorServerService extends Service {
      * @return
      */
     private boolean startServer(){
-        server = new SensorHTTPServer(activeSensors, getSensorList());
+        SensorsHandler sensorsHandler = new SensorsHandler(activeSensors, this);
+        FeedsController feedsController = new FeedsController(sensorsHandler);
+        server = new SensorHTTPServer(feedsController);
         try {
             server.start();
             //Shows "Server started" message on screen (doesn't work on wearable?)

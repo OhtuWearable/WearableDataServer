@@ -1,5 +1,9 @@
 package com.ohtu.wearable.wearabledataservice.server;
 
+import com.ohtu.wearable.wearabledataservice.sensors.SensorsHandler;
+
+import org.json.JSONException;
+
 /**
  * Returns device sensors data as JSON in NanoHTTPD.Response based on uri
  */
@@ -10,12 +14,9 @@ public class FeedsController {
     private List<Integer> sensorIds;
     private SensorsHandler sensorsHandler;
 
-    public FeedsController(SensorUnit sensors, List<Sensor> sensorList){
+    public FeedsController(SensorsHandler sensorsHandler){
 
-        this.sensorList = sensorList;
-        this.sensorIds = generateSensorIds(sensorList);
-        this.sensors = sensors;
-        this.sensorsHandler = new SensorsHandler();
+        this.sensorsHandler = sensorsHandler;
     }
 
     /**
@@ -45,7 +46,7 @@ public class FeedsController {
         //otherwise return not found
         if ((uri.equalsIgnoreCase("/") || uri.isEmpty()) && method.equals("GET")) {
             try {
-                return new NanoHTTPD.Response(sensorsHandler.sensorListToJSON(sensorList).toString());
+                return new NanoHTTPD.Response(sensorsHandler.sensorListToJSON(sensorsHandler.listAvailableSensors()).toString());
             } catch (JSONException e) {
                 return new NanoHTTPD.Response(NanoHTTPD.Response.Status.INTERNAL_ERROR, NanoHTTPD.MIME_PLAINTEXT, "Error");
             }

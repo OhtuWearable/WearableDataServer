@@ -6,31 +6,25 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.widget.TextView;
-
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Enumeration;
-
 
 /**
- * Starts the server service
+ * Starts the server service as bound foreground service
  */
 
 public class StartServerActivity extends Activity
 {
-    private TextView mTextView;
+    //private TextView mTextView;
     SensorServerService serverService = null;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        //String message;
         super.onCreate(savedInstanceState);
+
+        /*
         setContentView(R.layout.activity_main);
         mTextView = (TextView) findViewById(R.id.hello);
         mTextView.setText(getLocalIpAddress());
+        */
 
         //Start server as foreground service
         Intent startIntent = new Intent(this, SensorServerService.class);
@@ -64,6 +58,7 @@ public class StartServerActivity extends Activity
         }
     };
 
+    /*
     //returns devices ip address
     private static String getLocalIpAddress() {
         try {
@@ -81,5 +76,6 @@ public class StartServerActivity extends Activity
         }
         return null;
     }
+    */
 
 }
