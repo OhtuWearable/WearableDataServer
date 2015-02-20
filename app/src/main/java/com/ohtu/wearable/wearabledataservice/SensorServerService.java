@@ -49,7 +49,8 @@ public class SensorServerService extends Service {
             if (intent.getAction().equals(Constants.ACTION.STARTFOREGROUND_ACTION)) {
                 Intent notificationIntent = new Intent(this, MainActivity.class);
                 PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-                Notification notification = new Notification(R.drawable.common_signin_btn_icon_dark, "foofoo", System.currentTimeMillis());
+                //ToDo: replace 'R.drawable.common_signin_btn_icon_dark' with own icon
+                Notification notification = new Notification(R.drawable.common_signin_btn_icon_dark, "service running", System.currentTimeMillis());
                 notification.setLatestEventInfo(this, "SENSORHTTPSERVER", "service started", pendingIntent);
                 startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, notification);
             }
