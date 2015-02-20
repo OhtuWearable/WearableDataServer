@@ -56,7 +56,7 @@ public class SensorUnit implements SensorEventListener{
      * @throws JSONException
      */
     public JSONObject getSensorData() throws JSONException {
-        JSONconverter jsoNconverter = new JSONconverter();
+        JSONConverter jsoNconverter = new JSONConverter();
         return jsoNconverter.convertToJSON(data);
     }
 }

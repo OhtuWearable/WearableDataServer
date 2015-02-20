@@ -67,7 +67,7 @@ public class SensorServerService extends Service {
     }
 
     public void setSensors(List<Sensor> sensors){
-
+        this.activeSensors = sensors;
     }
 
     /**

@@ -29,6 +29,7 @@ public class SensorsHandler {
      * @param context Context of the service
      */
     public SensorsHandler(List<Sensor> sensors, Context context) {
+        sensorMap = new HashMap<>();
         this.context = context;
         initSensors(sensors);
     }
@@ -64,6 +65,9 @@ public class SensorsHandler {
         }
     }
 
+    public boolean sensorIsActive(int sensorId){
+        return sensorMap.containsKey(sensorId);
+    }
 
     public List<Sensor> listAvailableSensors() {
         return sensorManager.getSensorList(Sensor.TYPE_ALL);

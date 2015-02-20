@@ -9,9 +9,6 @@ import org.json.JSONException;
  */
 public class FeedsController {
 
-    private List<Sensor> sensorList;
-    private SensorUnit sensors;
-    private List<Integer> sensorIds;
     private SensorsHandler sensorsHandler;
 
     public FeedsController(SensorsHandler sensorsHandler){
@@ -50,10 +47,9 @@ public class FeedsController {
             } catch (JSONException e) {
                 return new NanoHTTPD.Response(NanoHTTPD.Response.Status.INTERNAL_ERROR, NanoHTTPD.MIME_PLAINTEXT, "Error");
             }
-        } else if ( sensorIds.contains(sensor) && uri.equalsIgnoreCase("/" + sensor) && method.equals("GET")){
+        } else if ( sensorsHandler.sensorIsActive(sensor) && uri.equalsIgnoreCase("/" + sensor) && method.equals("GET")){
             try {
-                sensors.setSensor(sensor);
-                return new NanoHTTPD.Response(sensors.getSensorData().toString());
+                return new NanoHTTPD.Response(sensorsHandler.getSensorData(sensor).toString());
             } catch (JSONException e) {
                 return notFoundResponse();
             }
