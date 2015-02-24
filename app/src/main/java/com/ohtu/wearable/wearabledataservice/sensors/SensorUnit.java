@@ -34,9 +34,9 @@ public class SensorUnit implements SensorEventListener{
 
     /**
      * Unregisters sensor listener
-     * @param sensor
+     * @param
      */
-    public void stopSensor(Sensor sensor) {
+    public void stopListening() {
         mSensorManager.unregisterListener(this, sensor);
     }
 

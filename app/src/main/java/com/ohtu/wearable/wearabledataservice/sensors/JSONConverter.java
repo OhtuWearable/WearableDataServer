@@ -32,6 +32,12 @@ public class JSONConverter {
         return convertToJSON(accelerometer);
     }*/
 
+    /**
+     * Converts input float[] to JSONObject
+     * @param data
+     * @return
+     * @throws JSONException
+     */
     public JSONObject convertToJSON(float[] data) throws JSONException {
         JSONObject jsonObject = new JSONObject();
 
@@ -49,7 +55,6 @@ public class JSONConverter {
         for (Sensor s : sensorList) {
             String prefix = s.getName();
             jsonObject.put(valueOf(prefix), s.getType());
-            //sensorIds.add(s.getType());   <- these were generated elsewhere too?
         }
         return jsonObject;
     }

@@ -108,8 +108,10 @@ public final class Adapter extends WearableListView.Adapter {
     }
 
 
-
-
+    /**
+     * Returns a list of sensors whose checkboxes are selected
+     * @return
+     */
     public List<Sensor> getSelectedSensors() {
         List<Sensor> sensors = new ArrayList<>();
         for (int i = 0; i < mDataset.size(); i++) {

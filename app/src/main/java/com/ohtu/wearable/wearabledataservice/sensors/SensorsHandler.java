@@ -49,6 +49,15 @@ public class SensorsHandler {
     }
 
     /**
+     * Stops listening of all set sensors
+     */
+    public void stopSensors() {
+        for (SensorUnit sensorUnit : sensorMap.values()) {
+            sensorUnit.stopListening();
+        }
+    }
+
+    /**
      * Returns sensor data from a selected sensor as a JSONObject
      * @param sensorId Integer value to specify a sensor
      * @return Asks a sensor for data, returns JSON
