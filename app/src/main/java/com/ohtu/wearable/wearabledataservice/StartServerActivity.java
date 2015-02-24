@@ -2,10 +2,21 @@ package com.ohtu.wearable.wearabledataservice;
 
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.IBinder;
+
+
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
+import java.util.List;
 
 /**
  * Starts the server service as bound foreground service
@@ -13,18 +24,19 @@ import android.os.IBinder;
 
 public class StartServerActivity extends Activity
 {
+    private SensorServerService sensorServerService = null;
+    private boolean serviceBound = false;
     //private TextView mTextView;
-    SensorServerService serverService = null;
-    
+    //SensorServerService serverService = null;
+
+    //this is called when this activity is started
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*
-        setContentView(R.layout.activity_main);
-        mTextView = (TextView) findViewById(R.id.hello);
-        mTextView.setText(getLocalIpAddress());
-        */
+        setContentView(R.layout.activity_startserver);
+        //mTextView = (TextView) findViewById(R.id.text);
+        //mTextView.setText(getLocalIpAddress());
 
         //Start server as foreground service
         Intent startIntent = new Intent(this, SensorServerService.class);
@@ -33,11 +45,15 @@ public class StartServerActivity extends Activity
 
     }
 
+    //this is called when this activity is started/resumed
     @Override
     protected void onResume() {
         super.onResume();
         Intent intentBind = new Intent(this, SensorServerService.class);
         bindService(intentBind, mConnection, 0);
+        if (serviceBound){
+            sensorServerService.startServer(getSensors());
+        }
     }
 
     @Override
@@ -46,19 +62,41 @@ public class StartServerActivity extends Activity
         unbindService(mConnection);
     }
 
+    //this is called when service is bound to this activit
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             SensorServerService.LocalBinder b = (SensorServerService.LocalBinder) service;
-            serverService = b.getService();
+            sensorServerService = b.getService();
+            sensorServerService.startServer(getSensors());
+            serviceBound = true;
         }
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            serverService = null;
+            sensorServerService = null;
         }
     };
 
-    /*
+
+    /**
+     * Sets sensors available to server
+     * @param List containing all available sensors
+     */
+    public void setServerSensors(List<Sensor> sensors){
+        if (serviceBound){
+            sensorServerService.startServer(sensors);
+        }
+    }
+
+
+    //remove this when passing list from UI is working
+    private List<Sensor> getSensors() {
+        SensorManager mSensorManager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
+        List<Sensor> deviceSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
+        return deviceSensors;
+    }
+
+
     //returns devices ip address
     private static String getLocalIpAddress() {
         try {
@@ -76,6 +114,5 @@ public class StartServerActivity extends Activity
         }
         return null;
     }
-    */
 
 }

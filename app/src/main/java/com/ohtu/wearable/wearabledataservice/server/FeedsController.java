@@ -42,23 +42,31 @@ public class FeedsController {
         //else if list of sensors contain sensor number parsed from uri return sensor data
         //otherwise return not found
         if ((uri.equalsIgnoreCase("/") || uri.isEmpty()) && method.equals("GET")) {
-            try {
-                return new NanoHTTPD.Response(sensorsHandler.sensorListToJSON(sensorsHandler.listAvailableSensors()).toString());
-            } catch (JSONException e) {
-                return new NanoHTTPD.Response(NanoHTTPD.Response.Status.INTERNAL_ERROR, NanoHTTPD.MIME_PLAINTEXT, "Error");
-            }
+            return listResponse();
         } else if ( sensorsHandler.sensorIsActive(sensor) && uri.equalsIgnoreCase("/" + sensor) && method.equals("GET")){
-            try {
-                return new NanoHTTPD.Response(sensorsHandler.getSensorData(sensor).toString());
-            } catch (JSONException e) {
-                return notFoundResponse();
-            }
+            return sensorDataResponse(sensor);
         } else {
             return notFoundResponse();
         }
 
     }
 
+    private NanoHTTPD.Response listResponse(){
+        try {
+            return new NanoHTTPD.Response(sensorsHandler.getSensorsList().toString());
+        } catch (JSONException e) {
+            return new NanoHTTPD.Response(NanoHTTPD.Response.Status.INTERNAL_ERROR, NanoHTTPD.MIME_PLAINTEXT, "Error");
+        }
+    }
+
+    private NanoHTTPD.Response sensorDataResponse(int sensor){
+        try {
+            return new NanoHTTPD.Response(sensorsHandler.getSensorData(sensor).toString());
+        } catch (JSONException e) {
+            return notFoundResponse();
+        }
+    }
+    
     //Returns NOT FOUND HTTP response
     private NanoHTTPD.Response notFoundResponse(){
         return new NanoHTTPD.Response(NanoHTTPD.Response.Status.NOT_FOUND, NanoHTTPD.MIME_PLAINTEXT, "Not Found");

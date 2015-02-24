@@ -29,8 +29,10 @@ public class SensorsHandler {
      * @param context Context of the service
      */
     public SensorsHandler(List<Sensor> sensors, Context context) {
-        sensorMap = new HashMap<>();
+        this.jsonConverter = new JSONConverter();
+        this.sensorMap = new HashMap<>();
         this.context = context;
+        this.sensors = sensors;
         initSensors(sensors);
     }
 
@@ -56,9 +58,14 @@ public class SensorsHandler {
         return sensorMap.get(sensorId).getSensorData();
     }
 
-    public JSONObject sensorListToJSON(List<Sensor> sensorList) throws JSONException {
+    /**
+     * Returns JSONobject containing all available sensors
+     * @return
+     * @throws JSONException
+     */
+    public JSONObject getSensorsList() throws JSONException {
         try {
-            return jsonConverter.convertSensorListToJSON(sensorList);
+            return jsonConverter.convertSensorListToJSON(this.sensors);
         } catch (JSONException e) {
             e.printStackTrace();
             return new JSONObject();
@@ -70,7 +77,7 @@ public class SensorsHandler {
     }
 
     public List<Sensor> listAvailableSensors() {
-        return sensorManager.getSensorList(Sensor.TYPE_ALL);
+        return sensors;
     }
 
 

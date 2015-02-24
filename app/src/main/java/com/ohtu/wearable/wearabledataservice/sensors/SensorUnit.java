@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,8 +28,8 @@ public class SensorUnit implements SensorEventListener{
     public void setSensor(Sensor sensor, Context mContext){
         this.sensorId = sensor.getType();
         this.sensor = sensor;
-        mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
+        mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     /**

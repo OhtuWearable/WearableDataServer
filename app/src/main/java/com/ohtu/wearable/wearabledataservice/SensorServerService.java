@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.hardware.Sensor;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.ohtu.wearable.wearabledataservice.sensors.SensorsHandler;
@@ -22,8 +23,9 @@ import java.util.List;
 public class SensorServerService extends Service {
 
     private boolean serverStarted = false;
+    private boolean serviceStarted = false;
     private SensorHTTPServer server;
-    private List<Sensor> activeSensors;
+    private SensorsHandler sensorsHandler;
 
     // Binder given to clients
     private final IBinder mBinder = new LocalBinder();
@@ -48,8 +50,8 @@ public class SensorServerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        //if service is not started start it as a foreground service
-        if (!serverStarted) {
+        //if service is not already started start it as a foreground service
+        if (!serviceStarted) {
             if (intent.getAction().equals(Constants.ACTION.STARTFOREGROUND_ACTION)) {
                 Intent notificationIntent = new Intent(this, MainActivity.class);
                 PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
@@ -57,38 +59,38 @@ public class SensorServerService extends Service {
                 Notification notification = new Notification(R.drawable.common_signin_btn_icon_dark, "service running", System.currentTimeMillis());
                 notification.setLatestEventInfo(this, "SENSORHTTPSERVER", "service started", pendingIntent);
                 startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, notification);
+                serviceStarted = true;
             }
-            //ToDo: handle server start failure
-            serverStarted = startServer();
         }
 
         // If we get killed, after returning from here, restart
         return START_STICKY;
     }
 
-    public void setSensors(List<Sensor> sensors){
-        this.activeSensors = sensors;
-    }
+
 
     /**
-     * try to start the HTTP server, if successful return true
-     *
-     * @return
+     * start the HTTP server if it's not running,
+     * otherwise updates used sensors
      */
-    private boolean startServer(){
-        SensorsHandler sensorsHandler = new SensorsHandler(activeSensors, this);
-        FeedsController feedsController = new FeedsController(sensorsHandler);
-        server = new SensorHTTPServer(feedsController);
-        try {
-            server.start();
-            //Shows "Server started" message on screen (doesn't work on wearable?)
-            Toast.makeText(this, "Server started", Toast.LENGTH_SHORT).show();
-            return true;
+    public void startServer(List<Sensor> sensors){
+        if (serverStarted){
+            sensorsHandler.initSensors(sensors);
+            Log.w("SERVER", "sensors updated");
+        } else {
+            sensorsHandler = new SensorsHandler(sensors, this);
+            FeedsController feedsController = new FeedsController(sensorsHandler);
+            server = new SensorHTTPServer(feedsController);
+            try {
+                server.start();
+                serverStarted = true;
+                //Shows "Server started" message on screen
+                Toast.makeText(this, "Server started", Toast.LENGTH_SHORT).show();
 
-        } catch (IOException ioe) {
-            //Shows "Server failed to start" message on screen (doesn't work on wearable?)
-            Toast.makeText(this, "Server failed to start", Toast.LENGTH_SHORT).show();
-            return false;
+            } catch (IOException ioe) {
+                //Shows "Server failed to start" message on screen
+                Toast.makeText(this, "Server failed to start", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
