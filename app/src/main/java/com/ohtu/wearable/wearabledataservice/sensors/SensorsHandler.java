@@ -68,6 +68,14 @@ public class SensorsHandler {
     }
 
     /**
+     * Stops listening the sensor given in input
+     * @param sensorId
+     */
+    public void stopSensor(int sensorId) {
+        sensorMap.get(sensorId).stopListening();
+    }
+
+    /**
      * Returns JSONobject containing all available sensors
      * @return
      * @throws JSONException
