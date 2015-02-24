@@ -66,7 +66,7 @@ public class FeedsController {
             return notFoundResponse();
         }
     }
-    
+
     //Returns NOT FOUND HTTP response
     private NanoHTTPD.Response notFoundResponse(){
         return new NanoHTTPD.Response(NanoHTTPD.Response.Status.NOT_FOUND, NanoHTTPD.MIME_PLAINTEXT, "Not Found");
