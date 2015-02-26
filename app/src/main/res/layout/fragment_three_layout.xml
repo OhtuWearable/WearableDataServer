@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.wearable.view.BoxInsetLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,7 +13,8 @@
         android:background="#ff000000"
         app:layout_box="left|bottom|right">
 
-    <TextView
+
+    <!--<TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -20,6 +22,43 @@
         android:id="@+id/textView3"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="63dp"
-        android:textSize="16sp"/>
+        android:textSize="16sp"/>-->
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/root_layout"
+            android:layout_gravity="bottom" >
+
+        <Button
+            android:id="@+id/btnaddnewaction1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Start Server"
+            android:layout_gravity="bottom"/>
+
+        <Button
+            android:id="@+id/btnaddnewaction2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Stop Server"
+            android:layout_gravity="bottom"/>
+
+        <Button
+            android:id="@+id/btnaddnewaction3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Show Battery"
+            android:layout_gravity="bottom"/>
+
+        <Button
+            android:id="@+id/btnaddnewaction4"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_gravity="bottom"/>
+        </LinearLayout>
 </ScrollView>
 </android.support.wearable.view.BoxInsetLayout>
