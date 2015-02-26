@@ -105,7 +105,7 @@ public final class WearableListAdapter extends WearableListView.Adapter {
                 }
 
                 /** Setting fragment to set the sensors for the MainActivity,
-                 * not really optimal to call every time */
+                 * not really optimal to call getSelectedSensors every time */
                 fragmentOne.setSensors(getSelectedSensors());
             }});
         holder.itemView.setTag(position);

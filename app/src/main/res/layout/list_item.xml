@@ -1,4 +1,4 @@
-<com.ohtu.wearable.wearabledataservice.WearableListItemLayout
+<com.ohtu.wearable.wearabledataservice.list.WearableListItemLayout
 xmlns:android="http://schemas.android.com/apk/res/android"
 android:gravity="center_vertical"
 android:layout_width="match_parent"
@@ -20,4 +20,4 @@ android:layout_height="80dp">
     android:lineSpacingExtra="-4sp"
     android:textColor="@color/primary_text_dark"
     android:textSize="16sp"/>
-</com.ohtu.wearable.wearabledataservice.WearableListItemLayout>
+</com.ohtu.wearable.wearabledataservice.list.WearableListItemLayout>
