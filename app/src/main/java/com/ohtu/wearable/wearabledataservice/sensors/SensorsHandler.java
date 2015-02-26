@@ -8,6 +8,7 @@ import android.hardware.SensorManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,10 +30,14 @@ public class SensorsHandler {
      * @param context Context of the service
      */
     public SensorsHandler(List<Sensor> sensors, Context context) {
+        if (sensors==null) {
+            sensors = new ArrayList<>();
+        } else {
+            this.sensors = sensors;
+        }
         this.jsonConverter = new JSONConverter();
         this.sensorMap = new HashMap<>();
         this.context = context;
-        this.sensors = sensors;
         initSensors(sensors);
     }
 
