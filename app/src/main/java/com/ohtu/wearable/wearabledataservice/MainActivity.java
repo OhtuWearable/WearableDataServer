@@ -11,6 +11,8 @@ import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 
+import com.ohtu.wearable.wearabledataservice.fragments.PagerAdapter;
+
 import java.util.List;
 
 public class MainActivity extends FragmentActivity implements SelectedSensorsInterface {
