@@ -36,7 +36,6 @@ public class SensorsHandler {
             this.sensors = sensors;
         }
         this.jsonConverter = new JSONConverter();
-        this.sensorMap = new HashMap<>();
         this.context = context;
         initSensors(sensors);
     }
@@ -46,6 +45,7 @@ public class SensorsHandler {
      * @param sensors List of Sensor-objects
      */
     public void initSensors(List<Sensor> sensors) {
+        this.sensorMap = new HashMap<>();
         for (Sensor s : sensors) {
             sensorMap.put(s.getType(), new SensorUnit());
             sensorMap.get(s.getType()).setSensor(s, this.context);
