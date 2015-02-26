@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 
 import com.ohtu.wearable.wearabledataservice.fragments.PagerAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends FragmentActivity implements SelectedSensorsInterface {
@@ -26,6 +27,7 @@ public class MainActivity extends FragmentActivity implements SelectedSensorsInt
 
     public void setSelectedSensors(List<Sensor> sensors){
         this.sensors = sensors;
+        setServerSensors(sensors);
     }
 
     public List<Sensor> getSelectedSensors(){
@@ -53,15 +55,16 @@ public class MainActivity extends FragmentActivity implements SelectedSensorsInt
 
 
 
-    //this is called when this activity is started/resumed
+    //called when this activity is started/resumed
     @Override
     protected void onResume() {
         super.onResume();
         Intent intentBind = new Intent(this, SensorServerService.class);
         bindService(intentBind, mConnection, 0);
+        /*
         if (serviceBound){
-            sensorServerService.startServer(getSensors());
-        }
+            sensorServerService.startServer(sensors);
+        }*/
     }
 
     @Override
@@ -70,7 +73,7 @@ public class MainActivity extends FragmentActivity implements SelectedSensorsInt
         unbindService(mConnection);
     }
 
-    //this is called when service is bound to this activit
+    //called when service is bound to this activity
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
