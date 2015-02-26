@@ -36,6 +36,7 @@ public class MainActivity extends FragmentActivity implements SelectedSensorsInt
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sensors = null;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -79,7 +80,7 @@ public class MainActivity extends FragmentActivity implements SelectedSensorsInt
         public void onServiceConnected(ComponentName name, IBinder service) {
             SensorServerService.LocalBinder b = (SensorServerService.LocalBinder) service;
             sensorServerService = b.getService();
-            sensorServerService.startServer(getSensors());
+            sensorServerService.startServer(sensors);
             serviceBound = true;
         }
         @Override
@@ -91,7 +92,7 @@ public class MainActivity extends FragmentActivity implements SelectedSensorsInt
 
     /**
      * Sets sensors available to server
-     * @param List containing all available sensors
+     * @param
      */
     public void setServerSensors(List<Sensor> sensors){
         if (serviceBound){
