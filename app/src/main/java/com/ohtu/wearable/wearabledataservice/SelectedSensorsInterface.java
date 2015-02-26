@@ -11,4 +11,6 @@ public interface SelectedSensorsInterface {
     public List<Sensor> getSelectedSensors();
 
     public void setSelectedSensors(List<Sensor> sensors);
+
+    public void setServerSensors(List<Sensor> sensors);
 }
