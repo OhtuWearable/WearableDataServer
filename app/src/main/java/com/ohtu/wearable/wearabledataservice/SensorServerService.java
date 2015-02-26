@@ -98,6 +98,7 @@ public class SensorServerService extends Service {
     @Override
     public void onDestroy (){
         //if service is destroyed stop server
+        sensorsHandler.stopSensors();
         server.stop();
     }
 
