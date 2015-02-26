@@ -37,6 +37,7 @@ public class SensorsHandler {
         }
         this.jsonConverter = new JSONConverter();
         this.context = context;
+        this.sensorMap = new HashMap<>();
         initSensors(sensors);
     }
 
@@ -45,10 +46,19 @@ public class SensorsHandler {
      * @param sensors List of Sensor-objects
      */
     public void initSensors(List<Sensor> sensors) {
-        this.sensorMap = new HashMap<>();
+        //stopSensors();
         for (Sensor s : sensors) {
-            sensorMap.put(s.getType(), new SensorUnit());
-            sensorMap.get(s.getType()).setSensor(s, this.context);
+            if (!sensorMap.containsKey(s.getType())) {
+                sensorMap.put(s.getType(), new SensorUnit());
+                sensorMap.get(s.getType()).setSensor(s, this.context);
+            } else if (!this.sensors.contains(s)) {
+                sensorMap.get(s.getType()).listenSensor();
+            }
+        }
+        for (Sensor s : this.sensors) {
+            if (!sensors.contains(s)) {
+                sensorMap.get(s.getType()).stopListening();
+            }
         }
         this.sensors = sensors;
     }
@@ -101,6 +111,7 @@ public class SensorsHandler {
     public List<Sensor> listAvailableSensors() {
         return sensors;
     }
+
 
 
 }

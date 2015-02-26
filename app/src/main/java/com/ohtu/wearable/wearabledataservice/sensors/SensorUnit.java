@@ -10,6 +10,9 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+import java.util.Random;
+
 /**
  * Created by jannetim on 12/02/15.
  */
@@ -19,6 +22,7 @@ public class SensorUnit implements SensorEventListener{
     private Sensor sensor;
     private int sensorId;
     private float[] data;
+    private int randomi = new Random().nextInt();
 
     /**
      * Registers listener to a sensor and also sets context for it
@@ -32,12 +36,17 @@ public class SensorUnit implements SensorEventListener{
         mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
+    public void listenSensor() {
+        mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
     /**
      * Unregisters sensor listener
      * @param
      */
     public void stopListening() {
         mSensorManager.unregisterListener(this, sensor);
+        data = null;
     }
 
     @Override
@@ -47,8 +56,11 @@ public class SensorUnit implements SensorEventListener{
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == sensorId)
-            data = event.values;
+        data = event.values;
+
+        if (event.sensor.getType() == 1) {
+            Log.d("kuuntelija", "voi ei!" + randomi);
+        }
     }
 
     /**
