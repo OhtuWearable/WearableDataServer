@@ -75,7 +75,7 @@ public class SensorServerService extends Service {
      */
     public void startServer(List<Sensor> sensors){
         if (serverStarted){
-            sensorsHandler.initSensors(sensors);
+            if (sensors != null) sensorsHandler.initSensors(sensors);
             Log.w("SERVER", "sensors updated");
         } else {
             sensorsHandler = new SensorsHandler(sensors, this);

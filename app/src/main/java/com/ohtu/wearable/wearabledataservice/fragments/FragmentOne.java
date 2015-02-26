@@ -84,6 +84,7 @@ public class FragmentOne extends Fragment implements WearableListView.ClickListe
 
     @Override
     public void onDetach(){
+        super.onDetach();
     }
 
 
