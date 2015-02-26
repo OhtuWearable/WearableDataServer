@@ -15,7 +15,6 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
         switch (arg0) {
             case 0:
-
                 return new FragmentThree();
             case 1:
                 return new FragmentOne();
