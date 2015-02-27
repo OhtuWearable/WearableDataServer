@@ -53,11 +53,14 @@ public class SensorServerService extends Service {
         //if service is not already started start it as a foreground service
         if (!serviceStarted) {
             if (intent.getAction().equals(Constants.ACTION.STARTFOREGROUND_ACTION)) {
+
+                Notification notification = new Notification.Builder(this).build();
+                //ToDo: custom icon for notification, when notification is clicked start app
+                /*
                 Intent notificationIntent = new Intent(this, MainActivity.class);
                 PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-                //ToDo: replace 'R.drawable.common_signin_btn_icon_dark' with own icon
                 Notification notification = new Notification(R.drawable.common_signin_btn_icon_dark, "service running", System.currentTimeMillis());
-                notification.setLatestEventInfo(this, "SENSORHTTPSERVER", "service started", pendingIntent);
+                notification.setLatestEventInfo(this, "DataServer", "service started", pendingIntent);*/
                 startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, notification);
                 serviceStarted = true;
             }
@@ -92,6 +95,13 @@ public class SensorServerService extends Service {
                 Toast.makeText(this, "Server failed to start", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    /**
+     * stops the server if it is running
+     */
+    public void stopServer(){
+        if (serverStarted) server.stop();
     }
 
 
