@@ -98,10 +98,14 @@ public class SensorServerService extends Service {
     }
 
     /**
-     * stops the server if it is running
+     * Stops the server if it is running
      */
     public void stopServer(){
-        if (serverStarted) server.stop();
+        if (serverStarted) {
+            server.stop();
+            serverStarted = false;
+            Toast.makeText(this, "Server stopped", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
