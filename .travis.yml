@@ -11,3 +11,4 @@ android:
 
 script:
   - ./gradlew test
+  
