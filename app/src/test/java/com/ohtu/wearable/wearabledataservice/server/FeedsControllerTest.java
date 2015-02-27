@@ -13,8 +13,9 @@ public class FeedsControllerTest {
         assertThat(true, is(true));
     }
 
+    /*
     @Test
     public void alwaysFailingTest(){
         assertThat(true, is(false));
-    }
+    }*/
 }
