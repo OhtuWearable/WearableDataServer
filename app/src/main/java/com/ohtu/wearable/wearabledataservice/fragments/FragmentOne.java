@@ -43,7 +43,7 @@ public class FragmentOne extends Fragment implements WearableListView.ClickListe
         elements = getSensors();
 
         //call MainActivitys setSelectedSensors method and pass list of sensors to it
-        ((SelectedSensorsInterface)getActivity()).setSelectedSensors(elements);
+        //((SelectedSensorsInterface)getActivity()).setSelectedSensors(elements);
 
         View view=inflater.inflate(R.layout.fragment_one_layout, container,false);
 

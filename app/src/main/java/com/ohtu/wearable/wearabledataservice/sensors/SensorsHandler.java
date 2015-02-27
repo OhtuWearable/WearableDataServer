@@ -31,14 +31,14 @@ public class SensorsHandler {
      */
     public SensorsHandler(List<Sensor> sensors, Context context) {
         if (sensors==null) {
-            sensors = new ArrayList<>();
+            this.sensors = new ArrayList<>();
         } else {
             this.sensors = sensors;
         }
         this.jsonConverter = new JSONConverter();
         this.context = context;
         this.sensorMap = new HashMap<>();
-        initSensors(sensors);
+        initSensors(this.sensors);
     }
 
     /**
