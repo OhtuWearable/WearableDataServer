@@ -102,10 +102,11 @@ public class MainActivity extends FragmentActivity implements SelectedSensorsInt
 
 
     //remove this when passing list from UI is working
+    /*
     private List<Sensor> getSensors() {
         SensorManager mSensorManager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
         List<Sensor> deviceSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
         return deviceSensors;
-    }
+    }*/
 
 }

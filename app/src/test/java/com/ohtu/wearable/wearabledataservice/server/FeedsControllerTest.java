@@ -1,15 +1,16 @@
 package com.ohtu.wearable.wearabledataservice.server;
 
-import junit.framework.TestCase;
 import org.junit.Test;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Created by sjsaarin on 20.2.2015.
  */
-public class FeedsControllerTest extends TestCase {
+public class FeedsControllerTest {
     @Test
     public void alwaysPassingTest(){
-        assert true;
+        assertThat(true, is(true));
     }
 
     /*
