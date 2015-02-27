@@ -15,23 +15,30 @@ import java.util.List;
 
 public class FragmentTwo extends Fragment {
     List<Sensor> sensorList;
-
+    TextView mTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //get list of sensor from MainActivity by calling it getSelectedSensors method
-        sensorList = ((SelectedSensorsInterface)getActivity()).getSelectedSensors();
-
         View view = inflater.inflate(R.layout.fragment_two_layout, container, false);
 
-        TextView mTextView = (TextView) view.findViewById(R.id.textView2);
-        if (sensorList != null) {
-            mTextView.setText(sensorList.toString());
-        }
+        mTextView = (TextView) view.findViewById(R.id.textView2);
+        mTextView.setText("");
 
         return view;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        //get list of sensor from MainActivity by calling it getSelectedSensors method
+        sensorList = ((SelectedSensorsInterface) getActivity()).getSelectedSensors();
+        if (sensorList != null) {
+            for (Sensor s: sensorList) {
+                mTextView.append(s.getName() + "\n");
+            }
+        }
     }
 
 }
