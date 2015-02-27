@@ -27,7 +27,9 @@ public class FragmentTwo extends Fragment {
         View view = inflater.inflate(R.layout.fragment_two_layout, container, false);
 
         TextView mTextView = (TextView) view.findViewById(R.id.textView2);
-        mTextView.setText(sensorList.toString());
+        if (sensorList != null) {
+            mTextView.setText(sensorList.toString());
+        }
 
         return view;
     }
