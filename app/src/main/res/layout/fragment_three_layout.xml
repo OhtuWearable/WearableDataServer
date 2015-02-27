@@ -35,15 +35,15 @@
             android:id="@+id/btnaddnewaction1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Start Server"
+            android:text="Start/Stop Server"
             android:layout_gravity="bottom"/>
 
-        <Button
+        <!--<Button
             android:id="@+id/btnaddnewaction2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Stop Server"
-            android:layout_gravity="bottom"/>
+            android:layout_gravity="bottom"/>-->
 
         <Button
             android:id="@+id/btnaddnewaction3"
@@ -51,13 +51,19 @@
             android:layout_height="wrap_content"
             android:text="Show Battery"
             android:layout_gravity="bottom"/>
+        
+        <!--<TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/TextView"
+            android:layout_gravity="center_horizontal" />-->
 
-        <Button
+        <!--<Button
             android:id="@+id/btnaddnewaction4"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text=""
-            android:layout_gravity="bottom"/>
+            android:layout_gravity="bottom"/>-->
         </LinearLayout>
 </ScrollView>
 </android.support.wearable.view.BoxInsetLayout>
