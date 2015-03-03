@@ -12,5 +12,8 @@
     <string name="long_press_intro">Close the application?</string>
     <string name="title_activity_list">ListActivity</string>
     <string name="hello_world">Hello world!</string>
+    
+    <string name="btnaddnewtext1">Start/Stop Server</string>
+    <string name="btnaddnewtext2">Battery Level</string>
 
 </resources>
