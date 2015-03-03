@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.wearable.view.BoxInsetLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ff000000"
+        app:layout_box="left|bottom|right">
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/root_layout"
+            android:layout_gravity="bottom" >
+
+        <Button
+            android:id="@+id/btnaddnewtext1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Start/Stop Server"
+            android:layout_gravity="bottom"/>
+
+        <!--<EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText"
+            android:layout_gravity="center_horizontal" />-->
+
+        <Button
+            android:id="@+id/btnaddnewtext2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Battery Level"
+            android:layout_gravity="bottom"/>
+
+        <!--<TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/TextView"
+            android:layout_gravity="center_horizontal" />-->
+
+        </LinearLayout>
+</ScrollView>
+</android.support.wearable.view.BoxInsetLayout>
