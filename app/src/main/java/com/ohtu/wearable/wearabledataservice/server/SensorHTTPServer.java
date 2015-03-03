@@ -3,17 +3,12 @@ package com.ohtu.wearable.wearabledataservice.server;
 import android.util.Log;
 
 /**
- *
+ * HTTP server, passes valid HTTP requests to FeedsController and returns HTTP response received from FeedsController
  */
-public class SensorHTTPServer extends NanoHTTPD {
+ public class SensorHTTPServer extends NanoHTTPD {
 
     private FeedsController feedsController;
 
-    /**
-     * HTTP server, passes all HTTP requests to FeedsController
-     *
-     * @param feedsController
-     */
     public SensorHTTPServer(FeedsController feedsController)
     {
         super(8080);
@@ -21,6 +16,8 @@ public class SensorHTTPServer extends NanoHTTPD {
     }
 
     /**
+     * if uri is /feeds* forwards request to FeedsController otherwise returns "NOT FOUND" response
+     *
      * @param session The HTTP session
      * @return NanoHTTPD.Response
      */
@@ -47,6 +44,8 @@ public class SensorHTTPServer extends NanoHTTPD {
             }
             //retrieve answer from FeedsController
             NanoHTTPD.Response response = feedsController.getResponse(feedsUri, method);
+            //allow cross-site requests
+            response.addHeader("Access-Control-Allow-Origin","*");
             return response;
         } else {
             return new NanoHTTPD.Response(Response.Status.NOT_FOUND, MIME_PLAINTEXT, "Not Found");
