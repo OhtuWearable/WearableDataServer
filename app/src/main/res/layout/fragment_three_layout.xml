@@ -32,7 +32,7 @@
             android:layout_gravity="bottom" >
 
         <Button
-            android:id="@+id/btnaddnewaction1"
+            android:id="@+id/btnaddnewtext1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Start/Stop Server"
@@ -46,7 +46,7 @@
             android:layout_gravity="bottom"/>-->
 
         <Button
-            android:id="@+id/btnaddnewaction3"
+            android:id="@+id/btnaddnewtext2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Show Battery"
