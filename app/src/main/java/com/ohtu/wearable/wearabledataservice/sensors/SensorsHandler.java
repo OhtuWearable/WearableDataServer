@@ -3,6 +3,7 @@ package com.ohtu.wearable.wearabledataservice.sensors;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.util.Log;
 
 
 import org.json.JSONException;
@@ -38,7 +39,14 @@ public class SensorsHandler {
         this.jsonConverter = new JSONConverter();
         this.context = context;
         this.sensorMap = new HashMap<>();
-        initSensors(this.sensors);
+        this.sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        //initSensors(this.sensors);
+        for (Sensor s : getAllSensorsOnDevice()) {
+            if (!sensorMap.containsKey(s.getType())) {
+                sensorMap.put(s.getType(), new SensorUnit());
+                sensorMap.get(s.getType()).setSensor(s, this.context);
+            }
+        }
     }
 
     /**
@@ -48,10 +56,7 @@ public class SensorsHandler {
     public void initSensors(List<Sensor> sensors) {
         //stopSensors();
         for (Sensor s : sensors) {
-            if (!sensorMap.containsKey(s.getType())) {
-                sensorMap.put(s.getType(), new SensorUnit());
-                sensorMap.get(s.getType()).setSensor(s, this.context);
-            } else if (!this.sensors.contains(s)) {
+            if (!this.sensors.contains(s)) {
                 sensorMap.get(s.getType()).listenSensor();
             }
         }
@@ -79,7 +84,12 @@ public class SensorsHandler {
      * @throws JSONException
      */
     public JSONObject getSensorData(int sensorId) throws JSONException {
-        return sensorMap.get(sensorId).getSensorData();
+        for (Sensor s : sensors) {
+            if (s.getType() == sensorId) {
+                return sensorMap.get(sensorId).getSensorData();
+            }
+        }
+        return new JSONObject();
     }
 
     /**
@@ -112,6 +122,8 @@ public class SensorsHandler {
         return sensors;
     }
 
-
+    public List<Sensor> getAllSensorsOnDevice() {
+        return sensorManager.getSensorList(Sensor.TYPE_ALL);
+    }
 
 }

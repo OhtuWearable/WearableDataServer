@@ -16,7 +16,7 @@ import java.util.List;
 public class JSONConverter {
 
 
-    public JSONArray getAllSensorsData() throws JSONException {
+    public static JSONArray getAllSensorsData() throws JSONException {
         JSONArray jsonArray = new JSONArray();
         //jsonArray.put(getAccelerometerData());
         //jsonArray.put(getMagneticFieldData());
@@ -38,7 +38,7 @@ public class JSONConverter {
      * @return
      * @throws JSONException
      */
-    public JSONObject convertToJSON(float[] data) throws JSONException {
+    public static JSONObject convertToJSON(float[] data) throws JSONException {
         JSONObject jsonObject = new JSONObject();
 
         char prefix = 'x';
@@ -49,7 +49,7 @@ public class JSONConverter {
         return jsonObject;
     }
 
-    public JSONObject convertSensorListToJSON(List<Sensor> sensorList) throws JSONException {
+    public static JSONObject convertSensorListToJSON(List<Sensor> sensorList) throws JSONException {
         JSONObject jsonObject = new JSONObject();
 
         for (Sensor s : sensorList) {

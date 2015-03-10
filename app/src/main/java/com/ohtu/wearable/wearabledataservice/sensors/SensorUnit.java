@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Handler;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -12,6 +13,7 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.Random;
+
 
 /**
  * Created by jannetim on 12/02/15.
@@ -23,6 +25,9 @@ public class SensorUnit implements SensorEventListener{
     private int sensorId;
     private float[] data;
     private int randomi = new Random().nextInt();
+    private Handler handler;
+    private boolean isListening;
+    private Runnable runnable;
 
     /**
      * Registers listener to a sensor and also sets context for it
@@ -30,14 +35,22 @@ public class SensorUnit implements SensorEventListener{
      * @param mContext
      */
     public void setSensor(Sensor sensor, Context mContext){
+        handler = new Handler();
         this.sensorId = sensor.getType();
         this.sensor = sensor;
         mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
-        mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                stopListening();
+            }
+        };
     }
 
     public void listenSensor() {
         mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        isListening = true;
+        handler.postDelayed(runnable, 5000);
     }
 
     /**
@@ -47,6 +60,7 @@ public class SensorUnit implements SensorEventListener{
     public void stopListening() {
         mSensorManager.unregisterListener(this, sensor);
         data = null;
+        isListening = false;
     }
 
     @Override
@@ -69,7 +83,13 @@ public class SensorUnit implements SensorEventListener{
      * @throws JSONException
      */
     public JSONObject getSensorData() throws JSONException {
-        JSONConverter jsoNconverter = new JSONConverter();
-        return jsoNconverter.convertToJSON(data);
+        if (isListening) {
+            handler.removeCallbacks(runnable);
+            handler.postDelayed(runnable, 5000);
+        } else {
+            listenSensor();
+        }
+        return JSONConverter.convertToJSON(data);
     }
 }
+
