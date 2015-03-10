@@ -45,6 +45,8 @@ public class FeedsController {
             return listResponse();
         } else if ( sensorsHandler.sensorIsActive(sensor) && uri.equalsIgnoreCase("/" + sensor) && method.equals("GET")){
             return sensorDataResponse(sensor);
+        } else if (method.equals("POST")) {
+            return new NanoHTTPD.Response(NanoHTTPD.Response.Status.valueOf("501"), NanoHTTPD.MIME_PLAINTEXT, "Not implemented");
         } else {
             return notFoundResponse();
         }
