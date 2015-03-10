@@ -53,6 +53,12 @@ public class SensorUnit implements SensorEventListener{
         handler.postDelayed(runnable, 5000);
     }
 
+    public void listenSensor(int listenTime) {
+        mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        isListening = true;
+        handler.postDelayed(runnable, listenTime);
+    }
+
     /**
      * Unregisters sensor listener
      * @param
