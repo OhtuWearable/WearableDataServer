@@ -27,6 +27,7 @@ public class SensorUnit implements SensorEventListener{
     private int randomi = new Random().nextInt();
     private Handler handler;
     private boolean isListening;
+    private int listenTime;
     private Runnable runnable;
 
     /**
@@ -51,9 +52,11 @@ public class SensorUnit implements SensorEventListener{
         mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         isListening = true;
         handler.postDelayed(runnable, 5000);
+        listenTime = 5000;
     }
 
     public void listenSensor(int listenTime) {
+        this.listenTime = listenTime;
         mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         isListening = true;
         handler.postDelayed(runnable, listenTime);
@@ -91,7 +94,7 @@ public class SensorUnit implements SensorEventListener{
     public JSONObject getSensorData() throws JSONException {
         if (isListening) {
             handler.removeCallbacks(runnable);
-            handler.postDelayed(runnable, 5000);
+            handler.postDelayed(runnable, listenTime);
         } else {
             listenSensor();
         }
