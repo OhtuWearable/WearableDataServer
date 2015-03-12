@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.ohtu.wearable.wearabledataservice.R;
+import com.ohtu.wearable.wearabledataservice.SensorServerService;
 
 public class FragmentThree extends Fragment {
 
@@ -33,12 +34,20 @@ public class FragmentThree extends Fragment {
             public void onClick(View v) {
                 //TODO: Code for Activities what will appears when user click button
 
-
-                Toast.makeText(v.getContext(), "Server is on", Toast.LENGTH_SHORT).show();
+                SensorServerService sensorServerService = new SensorServerService();
+                sensorServerService.stopServer();
+                //pitää muuttaa niin, että teksti tulee metodista
+                Toast.makeText(v.getContext(), "Server stopped", Toast.LENGTH_SHORT).show();
                 //TextView tv1 = new TextView(v.getContext());
                 //tv1.setText("...");
                 //layout.addView(tv1);
-
+                
+                //toistaiseksi jos yrittää kutsua metodia startServer - kaatuu.
+                /*sensorServerService.startServer();
+                //tai 
+                /*MainActivity  mainActivity= new MainActivity();
+                mainActivity.startServerService();
+                Toast.makeText(v.getContext(), "Server started", Toast.LENGTH_SHORT).show();*/
             }
 
         });
