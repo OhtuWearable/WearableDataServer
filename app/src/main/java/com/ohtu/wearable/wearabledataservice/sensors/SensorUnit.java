@@ -55,6 +55,10 @@ public class SensorUnit implements SensorEventListener{
         listenTime = 5000;
     }
 
+    /**
+     * Takes parameter to define time to listen before stopping sensorlistener
+     * @param listenTime
+     */
     public void listenSensor(int listenTime) {
         this.listenTime = listenTime;
         mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
@@ -88,6 +92,7 @@ public class SensorUnit implements SensorEventListener{
 
     /**
      * Sends native sensor data to JSONconverter that returns the data as a JSONObject
+     * Renews listening time accordingly to the set listenTime-variable
      * @return Sensor data in JSONObject
      * @throws JSONException
      */
@@ -100,5 +105,22 @@ public class SensorUnit implements SensorEventListener{
         }
         return JSONConverter.convertToJSON(data);
     }
+
+    /**
+     * Asks sensor for values and then stops listening immediately.
+     * @return
+     * @throws JSONException
+     */
+    public JSONObject getSensorDataOnce() throws JSONException {
+        if (isListening) {
+            handler.removeCallbacks(runnable);
+        } else {
+            listenSensor();
+        }
+        JSONObject jsonObject = JSONConverter.convertToJSON(data);
+        stopListening();
+        return jsonObject;
+    }
+
 }
 
