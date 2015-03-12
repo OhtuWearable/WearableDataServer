@@ -33,6 +33,10 @@ public class FragmentThree extends Fragment {
             @Override
             public void onClick(View v) {
                 //TODO: Code for Activities what will appears when user click button
+                
+                //TODO: toistaiseksi jos yrittää kutsua metodia startServer - kaatuu.
+                //kuuntelijaan nappulan tilan tarkistus, onko serveri stopattu vai käynnissä - 
+                //jotta tietää kumpaa metodia kutsuu
 
                 SensorServerService sensorServerService = new SensorServerService();
                 sensorServerService.stopServer();
@@ -42,7 +46,6 @@ public class FragmentThree extends Fragment {
                 //tv1.setText("...");
                 //layout.addView(tv1);
                 
-                //toistaiseksi jos yrittää kutsua metodia startServer - kaatuu.
                 /*sensorServerService.startServer();
                 //tai 
                 /*MainActivity  mainActivity= new MainActivity();
