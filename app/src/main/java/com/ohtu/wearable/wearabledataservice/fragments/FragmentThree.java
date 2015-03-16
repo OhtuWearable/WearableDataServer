@@ -41,7 +41,7 @@ public class FragmentThree extends Fragment {
                 SensorServerService sensorServerService = new SensorServerService();
                 sensorServerService.stopServer();
                 //pitää muuttaa niin, että teksti tulee metodista
-                Toast.makeText(v.getContext(), "Server stopped", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(v.getContext(), "Server stopped", Toast.LENGTH_SHORT).show();
                 //TextView tv1 = new TextView(v.getContext());
                 //tv1.setText("...");
                 //layout.addView(tv1);

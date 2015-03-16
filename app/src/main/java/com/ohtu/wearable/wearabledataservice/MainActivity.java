@@ -16,7 +16,7 @@ import com.ohtu.wearable.wearabledataservice.fragments.PagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends FragmentActivity implements SelectedSensorsInterface {
+public class MainActivity extends FragmentActivity implements SelectedSensorsInterface, ServerControlInterface {
 
     private SensorServerService sensorServerService = null;
     private boolean serviceBound = false;
@@ -97,6 +97,28 @@ public class MainActivity extends FragmentActivity implements SelectedSensorsInt
     public void setServerSensors(List<Sensor> sensors){
         if (serviceBound){
             sensorServerService.startServer(sensors);
+        }
+    }
+
+    /**
+     * Starts server
+     */
+    @Override
+    public void startServer() {
+        if (serviceBound){
+            sensorServerService.startServer(sensors);
+        } else {
+            startServerService();
+        }
+    }
+
+    /**
+     * Stops server
+     */
+    @Override
+    public void stopServer() {
+        if (serviceBound) {
+            sensorServerService.stopServer();
         }
     }
 

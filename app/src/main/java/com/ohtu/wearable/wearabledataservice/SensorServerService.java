@@ -23,6 +23,7 @@ import java.util.List;
 public class SensorServerService extends Service {
 
     private boolean serverStarted = false;
+    private boolean serverRunning = false;
     private boolean serviceStarted = false;
     private SensorHTTPServer server;
     private SensorsHandler sensorsHandler;
@@ -77,23 +78,16 @@ public class SensorServerService extends Service {
      * otherwise updates used sensors
      */
     public void startServer(List<Sensor> sensors){
-        if (serverStarted){
+        if (serverStarted && serverRunning){
             if (sensors != null) sensorsHandler.initSensors(sensors);
             Log.w("SERVER", "sensors updated");
+        } else if (serverStarted && !serverRunning) {
+            tryToStartServer();
         } else {
             sensorsHandler = new SensorsHandler(sensors, this);
             FeedsController feedsController = new FeedsController(sensorsHandler);
             server = new SensorHTTPServer(feedsController);
-            try {
-                server.start();
-                serverStarted = true;
-                //Shows "Server started" message on screen
-                Toast.makeText(this, "Server started", Toast.LENGTH_SHORT).show();
-
-            } catch (IOException ioe) {
-                //Shows "Server failed to start" message on screen
-                Toast.makeText(this, "Server failed to start", Toast.LENGTH_SHORT).show();
-            }
+            tryToStartServer();
         }
     }
 
@@ -103,7 +97,7 @@ public class SensorServerService extends Service {
     public void stopServer(){
         if (serverStarted) {
             server.stop();
-            serverStarted = false;
+            serverRunning = false;
             Toast.makeText(this, "Server stopped", Toast.LENGTH_SHORT).show();
         }
     }
@@ -114,6 +108,20 @@ public class SensorServerService extends Service {
         //if service is destroyed stop server
         sensorsHandler.stopSensors();
         server.stop();
+    }
+
+    private void tryToStartServer(){
+        try {
+            server.start();
+            serverStarted = true;
+            serverRunning = true;
+            //Shows "Server started" message on screen
+            Toast.makeText(this, "Server started", Toast.LENGTH_SHORT).show();
+
+        } catch (IOException ioe) {
+            //Shows "Server failed to start" message on screen
+            Toast.makeText(this, "Server failed to start", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
