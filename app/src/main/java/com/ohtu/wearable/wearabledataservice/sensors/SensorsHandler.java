@@ -118,7 +118,7 @@ public class SensorsHandler {
         return sensorMap.containsKey(sensorId);
     }
 
-    public List<Sensor> listAvailableSensors() {
+    public List<Sensor> getAvailableSensors() {
         return sensors;
     }
 
