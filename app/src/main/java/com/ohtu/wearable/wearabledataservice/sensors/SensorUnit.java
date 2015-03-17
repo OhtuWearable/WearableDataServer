@@ -86,7 +86,7 @@ public class SensorUnit implements SensorEventListener{
         data = event.values;
 
         if (event.sensor.getType() == 1) {
-            Log.d("kuuntelija", "voi ei!" + randomi);
+            //Log.d("kuuntelija", "voi ei!" + randomi);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.ohtu.wearable.wearabledataservice.sensors;
 
 import android.hardware.Sensor;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,13 +41,17 @@ public class JSONConverter {
      */
     public static JSONObject convertToJSON(float[] data) throws JSONException {
         JSONObject jsonObject = new JSONObject();
-
-        char prefix = 'x';
-        for (int i = 0; i<data.length;i++) {
-            jsonObject.put(valueOf(prefix), data[i]);
-            prefix++;
+        if (data==null) {
+            return jsonObject;
+        } else {
+            char prefix = 'x';
+            for (int i = 0; i < data.length; i++) {
+                jsonObject.put(valueOf(prefix), data[i]);
+                prefix++;
+            }
+            //Log.d("JSON", jsonObject.toString());
+            return jsonObject;
         }
-        return jsonObject;
     }
 
     public static JSONObject convertSensorListToJSON(List<Sensor> sensorList) throws JSONException {
