@@ -30,10 +30,10 @@ public class FragmentOne extends Fragment implements WearableListView.ClickListe
     /**
      * Creates the view by inflating the layout and assigning a custom adapter to the view to track the
      * list and setting a click listener to it.
-     * @param inflater inflater of the layout
-     * @param container parent view of the fragment
-     * @param savedInstanceState contains fragment's save state
-     * @return View of the fragment's ui
+     * @param inflater Inflater of the layout.
+     * @param container Parent view of the fragment if available.
+     * @param savedInstanceState Contains fragment's save state if available.
+     * @return View of the fragment's ui.
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

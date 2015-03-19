@@ -15,8 +15,8 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
     /**
      * Returns fragment associated with given position.
-     * @param arg0 position
-     * @return Fragment
+     * @param arg0 Position of the item.
+     * @return Fragment.
      */
     @Override
     public Fragment getItem(int arg0) {
@@ -36,7 +36,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
     /**
      * Returns the number of views available.
-     * @return Number of fragments
+     * @return Number of fragments.
      */
     @Override
     public int getCount() {
