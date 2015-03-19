@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Adapter class to pass information of the sensors to the view.
+ * Adapter class to pass selections of the sensors to the view.
  *
  */
 public final class WearableListAdapter extends WearableListView.Adapter {
@@ -43,7 +43,8 @@ public final class WearableListAdapter extends WearableListView.Adapter {
     }
 
     /**
-     * Provides a reference to the type of views used:
+     * A wrapper for the items displayed in the listView.
+     * In this list view it uses TextView and CheckBox.
      */
     public static class ItemViewHolder extends WearableListView.ViewHolder {
         private TextView textView;
@@ -59,8 +60,8 @@ public final class WearableListAdapter extends WearableListView.Adapter {
 
     /**
      * Creates new views for list items
-     * @param parent
-     * @param viewType
+     * @param parent ViewGroup
+     * @param viewType The view type of the new view
      * @return Inflated custom layout for list items
      */
     @Override
@@ -70,15 +71,14 @@ public final class WearableListAdapter extends WearableListView.Adapter {
     }
 
     /**
-     * Replaces the contents of a list item.
-     * Instead of creating new views, the list tries to recycle existing ones
-     * @param holder
-     * @param position Position of the list item
+     * Replaces the contents of a list item. Instead of always creating new views, the list tries to recycle
+     * existing ones.
+     * @param holder wrapper of the items displayed in listView.
+     * @param position Position of the list item.
      */
     @Override
     public void onBindViewHolder(WearableListView.ViewHolder holder,
                                  final int position) {
-        // retrieve the text view
         ItemViewHolder itemHolder = (ItemViewHolder) holder;
 
         TextView view = itemHolder.textView;
@@ -90,7 +90,7 @@ public final class WearableListAdapter extends WearableListView.Adapter {
         /** Setting checkbox a value if it has been checked already: */
         ((ItemViewHolder) holder).checkBox.setChecked(positions[position]);
         ((ItemViewHolder) holder).checkBox.setTag(String.valueOf(position));
-        /** setting click listener for checkbox: */
+        /** Setting a click listener for checkbox: */
         ((ItemViewHolder) holder).checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,8 +104,7 @@ public final class WearableListAdapter extends WearableListView.Adapter {
                     positions[pos] = false;
                 }
 
-                /** Setting fragment to set the sensors for the MainActivity,
-                 * not really optimal to call getSelectedSensors every time */
+                /** Calling fragmentOne to set the sensors for the MainActivity */
                 fragmentOne.setSensors(getSelectedSensors());
             }});
         holder.itemView.setTag(position);
@@ -121,6 +120,7 @@ public final class WearableListAdapter extends WearableListView.Adapter {
 
 
     /**
+     * A method to get a list of selected sensors.
      * @return List of sensors that are selected.
      */
     public List<Sensor> getSelectedSensors() {
@@ -130,9 +130,6 @@ public final class WearableListAdapter extends WearableListView.Adapter {
                 sensors.add(mDataset.get(i));
             }
         }
-        //for (int i = 0; i < sensors.size(); i++) {
-        //    System.out.println(sensors.get(i).getName());
-        //}
         return sensors;
     }
 

@@ -1,11 +1,9 @@
 package com.ohtu.wearable.wearabledataservice;
 
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
@@ -13,7 +11,6 @@ import android.support.v4.view.ViewPager;
 
 import com.ohtu.wearable.wearabledataservice.fragments.PagerAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends FragmentActivity implements SelectedSensorsInterface, ServerControlInterface {
@@ -47,16 +44,18 @@ public class MainActivity extends FragmentActivity implements SelectedSensorsInt
         startServerService();
     }
 
-    //starts server as foreground service
+    /**
+     * Starts server as a foreground service.
+     */
     private void startServerService() {
         Intent startIntent = new Intent(this, SensorServerService.class);
         startIntent.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
         startService(startIntent);
     }
 
-
-
-    //called when this activity is started/resumed
+    /**
+     * Called when this activity is started or resumed.
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -68,13 +67,18 @@ public class MainActivity extends FragmentActivity implements SelectedSensorsInt
         }*/
     }
 
+    /**
+     * Called when activity is paused.
+     */
     @Override
     protected void onPause() {
         super.onPause();
         unbindService(mConnection);
     }
 
-    //called when service is bound to this activity
+    /**
+     * Called when service is bound to this acitivy.
+     */
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -92,7 +96,7 @@ public class MainActivity extends FragmentActivity implements SelectedSensorsInt
 
     /**
      * Sets sensors available to server
-     * @param
+     * @param List of sensors.
      */
     public void setServerSensors(List<Sensor> sensors){
         if (serviceBound){
@@ -121,14 +125,4 @@ public class MainActivity extends FragmentActivity implements SelectedSensorsInt
             sensorServerService.stopServer();
         }
     }
-
-
-    //remove this when passing list from UI is working
-    /*
-    private List<Sensor> getSensors() {
-        SensorManager mSensorManager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
-        List<Sensor> deviceSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
-        return deviceSensors;
-    }*/
-
 }

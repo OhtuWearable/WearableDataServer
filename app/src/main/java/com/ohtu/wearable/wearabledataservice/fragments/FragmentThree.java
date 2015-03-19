@@ -16,8 +16,19 @@ import android.widget.Toast;
 import com.ohtu.wearable.wearabledataservice.R;
 import com.ohtu.wearable.wearabledataservice.SensorServerService;
 
+/**
+ * Fragment class which shows the opening view of the program with buttons to
+ * start or stop the server and monitor the battery.
+ */
 public class FragmentThree extends Fragment {
 
+    /**
+     * Creates the UI of the fragment and assigns click listeners to the two buttons.
+     * @param inflater Inflater of the layout.
+     * @param container Parent view of the fragment if available.
+     * @param savedInstanceState Contains fragment's save state if available.
+     * @return View of the fragment's ui.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -34,13 +45,13 @@ public class FragmentThree extends Fragment {
             public void onClick(View v) {
                 //TODO: Code for Activities what will appears when user click button
                 
-                //TODO: toistaiseksi jos yrittää kutsua metodia startServer - kaatuu.
-                //kuuntelijaan nappulan tilan tarkistus, onko serveri stopattu vai käynnissä - 
-                //jotta tietää kumpaa metodia kutsuu
+                //TODO: toistaiseksi jos yrittaa kutsua metodia startServer - kaatuu.
+                //kuuntelijaan nappulan tilan tarkistus, onko serveri stopattu vai kaynnissa -
+                //jotta tietaa kumpaa metodia kutsuu
 
                 SensorServerService sensorServerService = new SensorServerService();
                 sensorServerService.stopServer();
-                //pitää muuttaa niin, että teksti tulee metodista
+                //pitaa muuttaa niin, etta teksti tulee metodista
                 //Toast.makeText(v.getContext(), "Server stopped", Toast.LENGTH_SHORT).show();
                 //TextView tv1 = new TextView(v.getContext());
                 //tv1.setText("...");
@@ -58,21 +69,18 @@ public class FragmentThree extends Fragment {
         bn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Code for Activities what will appears when user click button
-                //Bn2 Have to show Battery Level in Tv2(TextArea) or in Notification
-
-                //TextView tv2 = new TextView(v.getContext());
-                Toast.makeText(v.getContext(), "Battery Level: " + batteryLevel(v.getContext()), Toast.LENGTH_LONG).show();
-                //tv2.setText("Battery Level: " + batteryLevel(v.getContext()));
-                //layout.addView(tv2);
-
+                 Toast.makeText(v.getContext(), "Battery Level: " + batteryLevel(v.getContext()), Toast.LENGTH_LONG).show();
             }
         });
 
         return view;
     }
 
-    //Method Shows Battery Level
+    /**
+     * Method for showing the battery level of the device.
+     * @param context Context of the fragment.
+     * @return String containing the battery charge.
+     */
     private String batteryLevel(Context context) {
 
         Intent intent;

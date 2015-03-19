@@ -1,6 +1,5 @@
 package com.ohtu.wearable.wearabledataservice.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
@@ -19,93 +18,81 @@ import com.ohtu.wearable.wearabledataservice.list.WearableListAdapter;
 
 import java.util.List;
 
+/**
+ * Fragment containing a listView which shows the list of all available sensors.
+ */
 public class FragmentOne extends Fragment implements WearableListView.ClickListener {
 
-    //Sensors for listing
     List<Sensor> elements;
-
     private RecyclerView mRecyclerView;
     private WearableListAdapter mAdapter;
-    private Helper mHelper;
 
-    //Setting context on Helper to help adding adapter in the onCreateView-method
-    @Override
-    public void onAttach(Activity activity){
-        super.onAttach (activity);
-        mHelper = new Helper (activity);
-    }
-
+    /**
+     * Creates the view by inflating the layout and assigning a custom adapter to the view to track the
+     * list and setting a click listener to it.
+     * @param inflater Inflater of the layout.
+     * @param container Parent view of the fragment if available.
+     * @param savedInstanceState Contains fragment's save state if available.
+     * @return View of the fragment's ui.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //Get sensor list manually
         elements = getSensors();
-
-        //call MainActivitys setSelectedSensors method and pass list of sensors to it
-        //((SelectedSensorsInterface)getActivity()).setSelectedSensors(elements);
-
         View view=inflater.inflate(R.layout.fragment_one_layout, container,false);
-
-        // Get the list component from the layout of the activity
         WearableListView listView =
                 (WearableListView) view.findViewById(R.id.wearable_list);
         mAdapter = new WearableListAdapter(this, elements);
-        // Assign an adapter to the list
         listView.setAdapter(mAdapter);
 
         if (listView.getAdapter() == null) {
             Log.d("Nullcheck is null", "");
         }
-
-        // Set a click listener
         listView.setClickListener(this);
-
-        //Add sensors for activity
         return view;
 
     }
 
-    //Add selected sensors for MainActivity
+    /**
+     * Passes a list of selected sensors to MainActivity.
+     * */
     public void setSensors(List<Sensor> sensors) {
         ((SelectedSensorsInterface)getActivity()).setSelectedSensors(sensors);
     }
 
-
-    // WearableListView click listener
+    /**
+     * Clicklistener for the WearableListView
+     * @param v ViewHolder containing the item clicked.
+     */
     @Override
     public void onClick(WearableListView.ViewHolder v) {
-        Integer tag = (Integer) v.itemView.getTag();
+        //Integer tag = (Integer) v.itemView.getTag();
     }
 
+    /**
+     * Called when top of the screen is clicked.
+     */
     @Override
     public void onTopEmptyRegionClick() {
     }
 
+    /**
+     * Called when the fragment is not connected to its activity.
+     */
     @Override
     public void onDetach(){
         super.onDetach();
     }
 
-
-    //Get sensor data from the device; probably needs a better place
+    /**
+     * Fetches all available sensors to be used with the list.
+     * @return List of all the sensors on the device.
+     */
     public List<Sensor> getSensors() {
         SensorManager mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         List<Sensor> deviceSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
         return deviceSensors;
-    }
-
-    //Helper class to get context for onCreateView
-    public class Helper {
-        Context context;
-        Activity activity;
-
-        public Helper(Context context) {
-            this.context = context;
-        }
-        public Context getHelper() {
-            return this.context;
-        }
     }
 
 }
