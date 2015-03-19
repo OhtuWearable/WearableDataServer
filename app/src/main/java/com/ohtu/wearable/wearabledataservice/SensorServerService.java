@@ -102,6 +102,14 @@ public class SensorServerService extends Service {
         }
     }
 
+    /**
+     * Is server running
+     *
+     * @return true if server running
+     */
+    public boolean isRunning(){
+        return serverRunning;
+    }
 
     @Override
     public void onDestroy (){

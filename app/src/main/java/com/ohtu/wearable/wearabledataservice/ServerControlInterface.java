@@ -6,4 +6,5 @@ package com.ohtu.wearable.wearabledataservice;
 public interface ServerControlInterface {
     public void startServer();
     public void stopServer();
+    public boolean isRunning();
 }
