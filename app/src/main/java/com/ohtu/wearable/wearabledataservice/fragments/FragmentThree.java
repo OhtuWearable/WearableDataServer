@@ -43,25 +43,12 @@ public class FragmentThree extends Fragment {
         bn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Code for Activities what will appears when user click button
+                //TODO: checking if server running or not, that onClickListener knows what to do
+                //If server is running - stop server
+                ((ServerControlInterface) getActivity()).stopServer();
+                //If server is stopped - start server
+                ((ServerControlInterface) getActivity()).startServer();
                 
-                //TODO: toistaiseksi jos yrittaa kutsua metodia startServer - kaatuu.
-                //kuuntelijaan nappulan tilan tarkistus, onko serveri stopattu vai kaynnissa -
-                //jotta tietaa kumpaa metodia kutsuu
-
-                SensorServerService sensorServerService = new SensorServerService();
-                sensorServerService.stopServer();
-                //pitaa muuttaa niin, etta teksti tulee metodista
-                //Toast.makeText(v.getContext(), "Server stopped", Toast.LENGTH_SHORT).show();
-                //TextView tv1 = new TextView(v.getContext());
-                //tv1.setText("...");
-                //layout.addView(tv1);
-                
-                /*sensorServerService.startServer();
-                //tai 
-                /*MainActivity  mainActivity= new MainActivity();
-                mainActivity.startServerService();
-                Toast.makeText(v.getContext(), "Server started", Toast.LENGTH_SHORT).show();*/
             }
 
         });
@@ -91,7 +78,5 @@ public class FragmentThree extends Fragment {
         int    percent = (level*100)/scale;
         return String.valueOf(percent) + "%";
     }
-
-    //TODO: Start and Stop server if needed
 
 }
