@@ -13,10 +13,20 @@ import com.ohtu.wearable.wearabledataservice.SelectedSensorsInterface;
 
 import java.util.List;
 
+/**
+ * Fragment containing a TextView showing the previously made selections.
+ */
 public class FragmentTwo extends Fragment {
     List<Sensor> sensorList;
     TextView mTextView;
 
+    /**
+     * Fragment which contains the TextView of the selections.
+     * @param inflater inflater of the layout
+     * @param container parent view of the fragment
+     * @param savedInstanceState contains fragment's save state
+     * @return View of the fragment's ui
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -29,10 +39,13 @@ public class FragmentTwo extends Fragment {
         return view;
     }
 
+    /**
+     * Called when the fragment is being resumed. Gets list of sensors from MainActivity and shows them
+     * in the TextView.
+     */
     @Override
     public void onResume(){
         super.onResume();
-        //get list of sensor from MainActivity by calling it getSelectedSensors method
         sensorList = ((SelectedSensorsInterface) getActivity()).getSelectedSensors();
         if (sensorList != null) {
             for (Sensor s: sensorList) {

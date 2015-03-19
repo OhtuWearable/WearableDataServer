@@ -16,8 +16,19 @@ import android.widget.Toast;
 import com.ohtu.wearable.wearabledataservice.R;
 import com.ohtu.wearable.wearabledataservice.SensorServerService;
 
+/**
+ * Fragment class which shows the opening view of the program with buttons to
+ * start or stop the server and monitor the battery.
+ */
 public class FragmentThree extends Fragment {
 
+    /**
+     * Creates the UI of the fragment and assigns click listeners to the two buttons.
+     * @param inflater inflater of the layout
+     * @param container parent view of the fragment
+     * @param savedInstanceState contains fragment's save state
+     * @return View of the fragment's ui
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,21 +69,18 @@ public class FragmentThree extends Fragment {
         bn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Code for Activities what will appears when user click button
-                //Bn2 Have to show Battery Level in Tv2(TextArea) or in Notification
-
-                //TextView tv2 = new TextView(v.getContext());
-                Toast.makeText(v.getContext(), "Battery Level: " + batteryLevel(v.getContext()), Toast.LENGTH_LONG).show();
-                //tv2.setText("Battery Level: " + batteryLevel(v.getContext()));
-                //layout.addView(tv2);
-
+                 Toast.makeText(v.getContext(), "Battery Level: " + batteryLevel(v.getContext()), Toast.LENGTH_LONG).show();
             }
         });
 
         return view;
     }
 
-    //Method Shows Battery Level
+    /**
+     * Method for showing the battery level of the device.
+     * @param context Context
+     * @return String containing the battery charge.
+     */
     private String batteryLevel(Context context) {
 
         Intent intent;

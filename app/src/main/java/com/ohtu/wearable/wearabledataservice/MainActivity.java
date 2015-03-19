@@ -1,11 +1,9 @@
 package com.ohtu.wearable.wearabledataservice;
 
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
@@ -13,7 +11,6 @@ import android.support.v4.view.ViewPager;
 
 import com.ohtu.wearable.wearabledataservice.fragments.PagerAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends FragmentActivity implements SelectedSensorsInterface, ServerControlInterface {

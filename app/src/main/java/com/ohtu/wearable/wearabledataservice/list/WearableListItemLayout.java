@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import com.ohtu.wearable.wearabledataservice.R;
 
-/** Contains layout for the List Items
- *
+/**
+ * Contains layout for the List Items.
  */
 public class WearableListItemLayout extends LinearLayout
         implements WearableListView.OnCenterProximityListener {
@@ -37,7 +37,7 @@ public class WearableListItemLayout extends LinearLayout
     }
 
     /**
-     * Sets references to the checkbox and text in the item layout definition
+     * Sets references to the checkbox and text in the item layout definition.
      */
     @Override
     protected void onFinishInflate() {
