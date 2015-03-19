@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.ohtu.wearable.wearabledataservice.R;
 import com.ohtu.wearable.wearabledataservice.SensorServerService;
+import com.ohtu.wearable.wearabledataservice.ServerControlInterface;
 
 /**
  * Fragment class which shows the opening view of the program with buttons to

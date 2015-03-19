@@ -96,7 +96,7 @@ public class MainActivity extends FragmentActivity implements SelectedSensorsInt
 
     /**
      * Sets sensors available to server
-     * @param List of sensors.
+     * @param list of sensors.
      */
     public void setServerSensors(List<Sensor> sensors){
         if (serviceBound){
@@ -124,5 +124,13 @@ public class MainActivity extends FragmentActivity implements SelectedSensorsInt
         if (serviceBound) {
             sensorServerService.stopServer();
         }
+    }
+
+    @Override
+    public boolean isRunning(){
+        if (serviceBound){
+            return sensorServerService.isRunning();
+        }
+        return false;
     }
 }
