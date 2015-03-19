@@ -20,20 +20,48 @@ import java.util.Random;
  */
 public class SensorUnit implements SensorEventListener{
 
+    /**
+     * Android's SensorManager to manage sensors
+     */
     private SensorManager mSensorManager;
+    /**
+     *
+     */
     private Sensor sensor;
+    /**
+     * Lol Ys dis heer, dunno :--) maybe there's gonna be some use eh?
+     */
     private int sensorId;
+    /**
+     * Float array to store latest sensor values
+     */
     private float[] data;
+    /**
+     *
+     */
     private int randomi = new Random().nextInt();
+    /**
+     * Android's Handler for handling and running runnables after some specific time
+     */
     private Handler handler;
-    private boolean isListening;
-    private int listenTime;
+    /**
+     * Android's runnable to be used with Handler
+     */
     private Runnable runnable;
+    /**
+     * Boolean to check if sensor listener is registered ie. changes in sensor values are being detected and stored
+     */
+    private boolean isListening;
+    /**
+     * Length of time how long sensor is kept waiting data requests before stopping listening
+     */
+    private int listenTime;
+
 
     /**
      * Registers listener to a sensor and also sets context for it
-     * @param sensor
-     * @param mContext
+     * @param sensor Sensor-object to be used
+     * @param mContext Context of the activity
      */
     public void setSensor(Sensor sensor, Context mContext){
         handler = new Handler();
@@ -48,6 +76,9 @@ public class SensorUnit implements SensorEventListener{
         };
     }
 
+    /**
+     * Registers listener to the sensor that's been set in the instance of SensorUnit
+     */
     public void listenSensor() {
         mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         isListening = true;
@@ -57,7 +88,8 @@ public class SensorUnit implements SensorEventListener{
 
     /**
      * Takes parameter to define time to listen before stopping sensorlistener
-     * @param listenTime
+     * @param listenTime Length of time defining how long sensor keeps waiting for new requests before
+     *                   its listener is unregistered
      */
     public void listenSensor(int listenTime) {
         this.listenTime = listenTime;
@@ -67,8 +99,7 @@ public class SensorUnit implements SensorEventListener{
     }
 
     /**
-     * Unregisters sensor listener
-     * @param
+     * Unregisters sensor's listener
      */
     public void stopListening() {
         mSensorManager.unregisterListener(this, sensor);
@@ -81,6 +112,10 @@ public class SensorUnit implements SensorEventListener{
 
     }
 
+    /**
+     * When sensor state changes new sensor values are assigned to data-array
+     * @param event Most recent sensor event
+     */
     @Override
     public void onSensorChanged(SensorEvent event) {
         data = event.values;
@@ -108,7 +143,7 @@ public class SensorUnit implements SensorEventListener{
 
     /**
      * Asks sensor for values and then stops listening immediately.
-     * @return
+     * @return JSONConverters output as JSONObject
      * @throws JSONException
      */
     public JSONObject getSensorDataOnce() throws JSONException {

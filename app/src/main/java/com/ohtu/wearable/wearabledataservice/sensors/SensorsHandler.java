@@ -15,14 +15,29 @@ import java.util.List;
 
 /**
  * Created by jannetim on 12/02/15.
- * Class for testing different ideas on how to solve multiple sensors and dealing with them dynamically
+ * Class for handling multiple sensors
  */
 public class SensorsHandler {
 
+    /**
+     * Android's SensorManager to manage sensors
+     */
     private SensorManager sensorManager;
+    /**
+     * JSONConverter for converting native data to JSON
+     */
     private JSONConverter jsonConverter;
+    /**
+     * HashMap for storing all sensors of the device
+     */
     private HashMap<Integer, SensorUnit> sensorMap;
+    /**
+     * List of sensors that are currently selected for listening
+     */
     private List<Sensor> sensors;
+    /**
+     * Context of the activity
+     */
     private Context context;
 
     /**
@@ -79,8 +94,8 @@ public class SensorsHandler {
 
     /**
      * Returns sensor data from a selected sensor as a JSONObject
-     * @param sensorId Integer value to specify a sensor
-     * @return Asks a sensor for data, returns JSON
+     * @param sensorId Integer value of the sensor to specify it
+     * @return If sensor is set 'active' sensor is asked for data; returns JSONObject either with values or empty
      * @throws JSONException
      */
     public JSONObject getSensorData(int sensorId) throws JSONException {
@@ -94,7 +109,7 @@ public class SensorsHandler {
 
     /**
      * Stops listening the sensor given in input
-     * @param sensorId
+     * @param sensorId Integer value of the sensor to specify it
      */
     public void stopSensor(int sensorId) {
         sensorMap.get(sensorId).stopListening();
@@ -102,7 +117,7 @@ public class SensorsHandler {
 
     /**
      * Returns JSONobject containing all available sensors
-     * @return
+     * @return JSONObject listing available sensors
      * @throws JSONException
      */
     public JSONObject getSensorsList() throws JSONException {
@@ -114,14 +129,27 @@ public class SensorsHandler {
         }
     }
 
+    /**
+     *
+     * @param sensorId Integer value of the sensor to specify it
+     * @return True if sensor is supported by the device, otherwise false
+     */
     public boolean sensorIsActive(int sensorId){
         return sensorMap.containsKey(sensorId);
     }
 
+    /**
+     * Returns list of sensors currently set 'active'
+     * @return List of sensors (objects) that are currently set 'active'
+     */
     public List<Sensor> getAvailableSensors() {
         return sensors;
     }
 
+    /**
+     * Returns list of sensors that are supported by the device
+     * @return List of sensors (objects) that are supported by the device
+     */
     public List<Sensor> getAllSensorsOnDevice() {
         return sensorManager.getSensorList(Sensor.TYPE_ALL);
     }
