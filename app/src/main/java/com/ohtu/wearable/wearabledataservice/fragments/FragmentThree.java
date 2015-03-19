@@ -44,14 +44,17 @@ public class FragmentThree extends Fragment {
         bn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: checking if server running or not, that onClickListener knows what to do
+                //checking if server running or not, that onClickListener knows what to do
                 //If server is running - stop server
-                ((ServerControlInterface) getActivity()).stopServer();
+                if(((ServerControlInterface) getActivity()).isRunning()) {
+                    ((ServerControlInterface) getActivity()).stopServer();
+                }else {
                 //If server is stopped - start server
                 ((ServerControlInterface) getActivity()).startServer();
+                }
                 
             }
-
+                
         });
 
         bn2.setOnClickListener(new View.OnClickListener() {
