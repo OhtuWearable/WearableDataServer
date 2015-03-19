@@ -16,23 +16,6 @@ import java.util.List;
  */
 public class JSONConverter {
 
-
-    public static JSONArray getAllSensorsData() throws JSONException {
-        JSONArray jsonArray = new JSONArray();
-        //jsonArray.put(getAccelerometerData());
-        //jsonArray.put(getMagneticFieldData());
-        //jsonArray.put(getGravityData());
-        //other get<Sensor>Datas
-
-        return jsonArray;
-    }
-
-/*    public JSONObject getAccelerometerData(SensorInterface accelerometer) throws JSONException {
-        //Accelerometer accelerometer = new Accelerometer();
-        //accelerometer.setContext(this);
-        return convertToJSON(accelerometer);
-    }*/
-
     /**
      * Converts input float[] to JSONObject
      * @param data
@@ -54,6 +37,12 @@ public class JSONConverter {
         }
     }
 
+    /**
+     * Converts list of sensor objects to readable JSON format
+     * @param sensorList List of Sensor-objects
+     * @return JSONObject containing information of all if any sensors given in the list
+     * @throws JSONException
+     */
     public static JSONObject convertSensorListToJSON(List<Sensor> sensorList) throws JSONException {
         JSONObject jsonObject = new JSONObject();
 
