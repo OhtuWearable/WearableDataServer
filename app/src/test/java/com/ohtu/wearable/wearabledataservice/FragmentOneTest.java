@@ -42,10 +42,4 @@ public class FragmentOneTest {
         assertNotNull(activity);
     }
 
-    @Test
-    public void listViewIsCreated() throws Exception {
-        Activity activity = fragment.getActivity();
-        WearableListView listView = (WearableListView) fragment.getActivity().findViewById(R.id.wearable_list);
-        assertNotNull(listView);
-    }
 }
