@@ -42,7 +42,7 @@ public class SensorsHandler {
 
     /**
      * Constructor for SensorsHandler
-     * @param sensors List of selected Sensor-objects
+     * @param sensors List of selected Sensor-objects (actually an empty list)
      * @param context Context of the service
      */
     public SensorsHandler(List<Sensor> sensors, Context context) {
