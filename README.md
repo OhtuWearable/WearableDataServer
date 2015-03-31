@@ -1,2 +1,2 @@
 # WearableDataServer
-<p><a href="https://travis-ci.org/travis-ci/travis-web"><img src="https://travis-ci.org/travis-ci/travis-web.svg?branch=master" alt="Build Status" /></a></p>
+<p><a href="https://travis-ci.org/OhtuWearable/WearableDataServer"><img src="https://travis-ci.org/OhtuWearable/WearableDataServer.svg?branch=master" alt="Build Status" /></a></p>
