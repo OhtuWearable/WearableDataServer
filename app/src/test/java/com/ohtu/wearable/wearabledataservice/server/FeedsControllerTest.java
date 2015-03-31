@@ -58,11 +58,6 @@ public class FeedsControllerTest {
         NanoHTTPD.Response responseFromFeedsController = feedsController.getResponse("", "GET");
         assertThat(readISToString(responseFromFeedsController.getData(), "UTF8"), is(sensorsHandler.getSensorsList().toString()));
     }
-    /*
-    @Test
-    public void alwaysFailingTest(){
-        assertThat(true, is(false));
-    }*/
 
     //helper methods
     public String readISToString(InputStream istream, String encoding) throws IOException {
