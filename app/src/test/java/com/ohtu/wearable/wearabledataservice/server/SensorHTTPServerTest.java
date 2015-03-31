@@ -23,7 +23,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * Created by sjsaarin on 27.3.2015.
  */
-//@RunWith(CustomRobolectricRunner.class)
+@RunWith(CustomRobolectricRunner.class)
 public class SensorHTTPServerTest {
 
     private SensorsHandler sensorsHandler;
