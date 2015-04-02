@@ -22,6 +22,10 @@ import java.util.List;
  */
 @RunWith(CustomRobolectricRunner.class)
 public class SensorServerServiceTest {
+    @Test
+    public void doesNothing(){
+        
+    }
     /*
     private List<Sensor> sensorList;
     private SensorServerService service;
