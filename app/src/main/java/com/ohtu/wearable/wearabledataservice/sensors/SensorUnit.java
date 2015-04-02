@@ -79,12 +79,11 @@ public class SensorUnit implements SensorEventListener{
     /**
      * Registers listener to the sensor that's been set in the instance of SensorUnit
      */
-    public boolean listenSensor() {
+    public void listenSensor() {
         isListening = mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         //isListening = true;
         handler.postDelayed(runnable, 5000);
         listenTime = 5000;
-        return isListening;
     }
 
     /**

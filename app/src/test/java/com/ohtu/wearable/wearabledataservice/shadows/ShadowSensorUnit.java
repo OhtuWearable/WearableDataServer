@@ -14,8 +14,6 @@ import org.robolectric.annotation.Implements;
 import org.robolectric.annotation.RealObject;
 import org.robolectric.shadows.ShadowSensorManager;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
 import static org.robolectric.Shadows.shadowOf;
 
 /**
@@ -25,8 +23,9 @@ import static org.robolectric.Shadows.shadowOf;
 public class ShadowSensorUnit {
 
     @RealObject private SensorManager sensorManager;
-    @RealObject private Sensor sensor;
+    private Sensor sensor;
     private ShadowSensorManager shadow;
+    private SensorEventListener listener;
 
     @Implementation
     public void setSensor(Sensor sensor, Context context) {
@@ -37,7 +36,7 @@ public class ShadowSensorUnit {
 
     @Implementation
     public boolean listenSensor() {
-        SensorEventListener listener = new SensorEventListener() {
+        listener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
 
@@ -48,11 +47,22 @@ public class ShadowSensorUnit {
 
             }
         };
-        shadow.registerListener(listener, sensor, 5000);
+        shadow.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         if (shadow.hasListener(listener)) {
             return true;
         } else {
             return false;
         }
+    }
+
+    @Implementation
+    public boolean stopListening() {
+        shadow.unregisterListener(listener);
+        if (shadow.hasListener(listener)) {
+            return false;
+        } else {
+            return true;
+        }
+
     }
 }
