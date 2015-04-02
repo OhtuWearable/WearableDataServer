@@ -42,10 +42,9 @@ public class SensorHTTPServerTest {
     public void serverStarts(){
         try {
             server.start();
-            assert(true);
         } catch (IOException e) {
-            assert(false);
         }
+        assertThat(server.wasStarted(), is(true));
     }
 
 }

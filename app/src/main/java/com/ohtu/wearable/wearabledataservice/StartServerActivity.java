@@ -26,8 +26,6 @@ public class StartServerActivity extends Activity
 {
     private SensorServerService sensorServerService = null;
     private boolean serviceBound = false;
-    //private TextView mTextView;
-    //SensorServerService serverService = null;
 
     //this is called when this activity is started
     @Override
@@ -62,7 +60,7 @@ public class StartServerActivity extends Activity
         unbindService(mConnection);
     }
 
-    //this is called when service is bound to this activit
+    //this is called when service is bound to this activity
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {

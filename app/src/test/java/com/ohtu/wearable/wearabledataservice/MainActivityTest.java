@@ -27,7 +27,7 @@ public class MainActivityTest {
     //private final ActivityController<MainActivity> controller = buildActivity(MainActivity.class);
 
     @Test
-    public void testIt() {
+    public void activityIsCreated() {
         Activity activity = Robolectric.buildActivity(MainActivity.class).create().get();
         assertThat(activity, notNullValue());
     }
@@ -39,17 +39,18 @@ public class MainActivityTest {
     }
 
     @Test
-    public void whenSensorAreSetGetSelectedSensorsDoesntReturnsNull() {
+    public void whenSensorAreSetGetSelectedSensorsDoesntReturnNull() {
         SelectedSensorsInterface ssi = Robolectric.buildActivity(MainActivity.class).create().get();
         List<Sensor> sensors = new ArrayList<>();
         ssi.setSelectedSensors(sensors);
         assertThat(ssi.getSelectedSensors(), notNullValue());
     }
 
+    /*
     @Test
     public void whenMainActivityIsStartedSomethingHappens() {
         Activity activity = Robolectric.buildActivity(MainActivity.class).create().get();
 
-    }
+    }*/
 
 }
