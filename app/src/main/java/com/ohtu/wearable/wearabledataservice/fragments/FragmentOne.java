@@ -39,7 +39,9 @@ public class FragmentOne extends Fragment implements WearableListView.ClickListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        elements = getSensors();
+        if (elements == null) {
+            elements = getSensors();
+        }
         View view=inflater.inflate(R.layout.fragment_one_layout, container,false);
         WearableListView listView =
                 (WearableListView) view.findViewById(R.id.wearable_list);
@@ -94,5 +96,15 @@ public class FragmentOne extends Fragment implements WearableListView.ClickListe
         List<Sensor> deviceSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
         return deviceSensors;
     }
+
+    /**
+     * Sets a custom sensor list as the wearable list to help with testing.
+     * @param sensors List of sensors to be set
+     */
+    public void setFragmentSensors(List<Sensor> sensors) {
+        this.elements = sensors;
+    }
+
+
 
 }
