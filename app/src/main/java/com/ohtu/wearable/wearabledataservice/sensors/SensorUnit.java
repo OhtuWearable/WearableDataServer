@@ -36,10 +36,9 @@ public class SensorUnit implements SensorEventListener{
      * Float array to store latest sensor values
      */
     private float[] data;
-    /**
-     *
-     */
-    private int randomi = new Random().nextInt();
+
+    //private int randomi = new Random().nextInt();
+
     /**
      * Android's Handler for handling and running runnables after some specific time
      */
@@ -118,11 +117,15 @@ public class SensorUnit implements SensorEventListener{
      */
     @Override
     public void onSensorChanged(SensorEvent event) {
-        data = event.values;
-
-        if (event.sensor.getType() == 1) {
-            //Log.d("kuuntelija", "voi ei!" + randomi);
+        data = new float[event.values.length+1];
+        data[0] = System.currentTimeMillis();
+        for (int i = 1; i<data.length;i++) {
+            data[i] = event.values[i-1];
         }
+
+        /*if (event.sensor.getType() == 1) {
+            Log.d("kuuntelija", "voi ei!" + randomi);
+        }*/
     }
 
     /**
