@@ -55,13 +55,13 @@ public class SensorsHandler {
         this.context = context;
         this.sensorMap = new HashMap<>();
         this.sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-        //initSensors(this.sensors);
         for (Sensor s : getAllSensorsOnDevice()) {
             if (!sensorMap.containsKey(s.getType())) {
                 sensorMap.put(s.getType(), new SensorUnit());
                 sensorMap.get(s.getType()).setSensor(s, this.context);
             }
         }
+        //initSensors(this.sensors);
     }
 
     /**

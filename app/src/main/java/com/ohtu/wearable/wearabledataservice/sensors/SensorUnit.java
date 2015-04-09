@@ -118,10 +118,10 @@ public class SensorUnit implements SensorEventListener{
     @Override
     public void onSensorChanged(SensorEvent event) {
         data = new float[event.values.length+1];
-        data[0] = System.currentTimeMillis();
-        for (int i = 1; i<data.length;i++) {
-            data[i] = event.values[i-1];
+        for (int i = 0; i<event.values.length;i++) {
+            data[i] = event.values[i];
         }
+        data[event.values.length] = System.currentTimeMillis();
 
         /*if (event.sensor.getType() == 1) {
             Log.d("kuuntelija", "voi ei!" + randomi);

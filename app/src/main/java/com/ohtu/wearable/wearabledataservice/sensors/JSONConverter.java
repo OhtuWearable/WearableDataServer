@@ -30,7 +30,11 @@ public class JSONConverter {
             char prefix = 'x';
             for (int i = 0; i < data.length; i++) {
                 jsonObject.put(valueOf(prefix), data[i]);
-                prefix++;
+                if (prefix == 'z') {
+                    prefix = 'a';
+                } else {
+                    prefix++;
+                }
             }
             //Log.d("JSON", jsonObject.toString());
             return jsonObject;
