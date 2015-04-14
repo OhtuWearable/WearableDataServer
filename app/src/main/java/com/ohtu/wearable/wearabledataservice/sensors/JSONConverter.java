@@ -22,7 +22,7 @@ public class JSONConverter {
      * @return
      * @throws JSONException
      */
-    public static JSONObject convertToJSON(float[] data) throws JSONException {
+    public static JSONObject convertToJSON(double[] data) throws JSONException {
         JSONObject jsonObject = new JSONObject();
         if (data==null) {
             return jsonObject;

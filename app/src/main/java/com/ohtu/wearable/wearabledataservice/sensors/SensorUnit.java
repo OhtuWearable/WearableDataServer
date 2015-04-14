@@ -35,7 +35,7 @@ public class SensorUnit implements SensorEventListener{
     /**
      * Float array to store latest sensor values
      */
-    private float[] data;
+    private double[] data;
 
     //private int randomi = new Random().nextInt();
 
@@ -117,7 +117,7 @@ public class SensorUnit implements SensorEventListener{
      */
     @Override
     public void onSensorChanged(SensorEvent event) {
-        data = new float[event.values.length+1];
+        data = new double[event.values.length+1];
         for (int i = 0; i<event.values.length;i++) {
             data[i] = event.values[i];
         }
