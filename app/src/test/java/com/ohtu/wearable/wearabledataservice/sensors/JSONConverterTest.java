@@ -39,7 +39,7 @@ public class JSONConverterTest {
 
     @Test
     public void convertingReturnsDataInJSONFormat() throws JSONException {
-        float[] data = new float[2];
+        double[] data = new double[2];
         data[0] = 1; data[1] = 0;
         assertThat(JSONConverter.convertToJSON(data).toString(), is("{\"x\":1,\"y\":0}"));
     }
