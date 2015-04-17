@@ -160,5 +160,9 @@ public class SensorUnit implements SensorEventListener{
         return jsonObject;
     }
 
+    public String getSensorName() {
+        return this.sensor.getName();
+    }
+
 }
 

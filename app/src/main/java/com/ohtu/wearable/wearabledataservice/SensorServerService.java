@@ -1,18 +1,22 @@
 package com.ohtu.wearable.wearabledataservice;
 
 import android.app.Notification;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.hardware.Sensor;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.ohtu.wearable.wearabledataservice.sensors.JSONConverter;
 import com.ohtu.wearable.wearabledataservice.sensors.SensorsHandler;
 import com.ohtu.wearable.wearabledataservice.server.FeedsController;
+import com.ohtu.wearable.wearabledataservice.server.SensorDatabase;
 import com.ohtu.wearable.wearabledataservice.server.SensorHTTPServer;
+
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,6 +31,7 @@ public class SensorServerService extends Service {
     private boolean serviceStarted = false;
     private SensorHTTPServer server;
     private SensorsHandler sensorsHandler;
+    SQLiteDatabase db;
 
     // Binder given to clients
     private final IBinder mBinder = new LocalBinder();
@@ -79,8 +84,31 @@ public class SensorServerService extends Service {
      * otherwise updates used sensors
      */
     public void startServer(List<Sensor> sensors){
+        if (db == null && sensors != null) {
+            //delete database first for testing purposes:
+            //this.deleteDatabase("SensorDB.db");
+            //Log.d("DB", "deleting database");
+            SensorDatabase helper = new SensorDatabase(this, sensorsHandler.getAllSensorsOnDevice());
+            //MySQLiteHelper helper = new MySQLiteHelper(this, sensorsHandler.getAllSensorsOnDevice());
+            db = helper.getWritableDatabase();
+            //db.isOpen();
+            Log.w("DB", "started");
+            try {
+                System.out.println("\n");
+                System.out.println("\n");
+                System.out.println(JSONConverter.convertSensorListToJSON(sensorsHandler.getAllSensorsOnDevice()));
+                System.out.println("\n");
+            } catch (JSONException e){
+
+            }
+
+
+
+        }
+
         if (serverStarted && serverRunning){
             if (sensors != null) sensorsHandler.initSensors(sensors);
+
             Log.w("SERVER", "sensors updated");
         } else if (serverStarted && !serverRunning) {
             tryToStartServer();
@@ -88,6 +116,7 @@ public class SensorServerService extends Service {
             sensorsHandler = new SensorsHandler(sensors, this);
             FeedsController feedsController = new FeedsController(sensorsHandler);
             server = new SensorHTTPServer(feedsController);
+
             tryToStartServer();
         }
     }

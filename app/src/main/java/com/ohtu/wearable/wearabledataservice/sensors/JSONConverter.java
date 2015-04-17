@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import static java.lang.String.valueOf;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -56,4 +57,21 @@ public class JSONConverter {
         }
         return jsonObject;
     }
+
+    /** add sensorevent data to database */
+    public static JSONObject convertToDatabaseJSON(SensorUnit unit) {
+        try {
+            JSONObject jEntry = new JSONObject();
+            //jEntry.put("id", id);
+            jEntry.put("sensor", unit.getSensorName());
+            //jEntry.put("timestamp", timestamp.getTime());
+            jEntry.put("data", unit.getSensorData());
+            return jEntry;
+        } catch (JSONException e) {
+            Log.e("convertToDatabaseJSON", "Could not generate the JSON object for the feed entry");
+            return null;
+        }
+    }
+
+
 }
