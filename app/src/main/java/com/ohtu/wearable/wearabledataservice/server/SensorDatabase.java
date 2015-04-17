@@ -9,19 +9,11 @@ import android.hardware.Sensor;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.StringBuilder;
-import java.lang.System;import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-
-import android.hardware.SensorEvent;
 import android.util.Log;
-
-import com.google.android.gms.analytics.ecommerce.Product;
 import com.ohtu.wearable.wearabledataservice.sensors.JSONConverter;
 import com.ohtu.wearable.wearabledataservice.sensors.SensorUnit;
 import com.ohtu.wearable.wearabledataservice.sensors.SensorsHandler;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,8 +34,6 @@ public class SensorDatabase extends SQLiteOpenHelper {
 
     public SensorDatabase(Context context, List<Sensor> sensors) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        //this.sensorsHandler = sensorsHandler;
-        //Log.d("SensorDatabase", "****created");
         this.sensors = sensors;
     }
 
@@ -77,7 +67,6 @@ public class SensorDatabase extends SQLiteOpenHelper {
 
             db.execSQL(help.toString());
         }
-
     }
 
     /**
@@ -85,7 +74,6 @@ public class SensorDatabase extends SQLiteOpenHelper {
      * @param db Database where the sensors are deleted.
      */
     public void dropTables(SQLiteDatabase db) {
-        StringBuilder help;
         for (int i = 0; i < sensors.size(); i++) {
             db.delete("\"" + sensors.get(i).getName() + "\"", null, null);
         }
@@ -97,6 +85,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
      * @param unit SensorUnit containing the sensor data
      */
     public void addSensorUnit(SensorUnit unit){
+        //TODO: add timestamps
         //for logging
         Log.d("addSensor ", unit.getSensorName());
 
@@ -124,7 +113,11 @@ public class SensorDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
-    /** Get sensor data as an JSONObject */
+    /**
+     * Get sensor data as an JSONObject
+     * @param id id of the sensor
+     * @return JSONObject containing double data[] values from SensorUnit as converted by JSONConverter's convertToJSON-method
+     */
     public JSONObject getJSONSensorData(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -141,45 +134,30 @@ public class SensorDatabase extends SQLiteOpenHelper {
         if (cursor != null)
             cursor.moveToFirst();
 
-        SensorUnit sensorUnit = new SensorUnit();
         String jsonString = cursor.getString(2);
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
             String name = (String) jsonObject.get("sensor");
             JSONObject data = (JSONObject) jsonObject.get("data");
-
+            cursor.close();
             return data;
         } catch(JSONException e) {
 
         }
+        cursor.close();
         return null;
     }
 
-    /*
-    //does not work currently
-    public void getAllSensorData(Sensor sensor) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String TABLE_SENSOR = "TABLE_" + "\"" + sensor.getName() + "\"";
-
-        String sortOrder =
-                COLUMN_TIME_STAMP + " DESC";
-
-        Cursor c = db.query(
-                TABLE_SENSOR,  // The table to query
-                COLUMNS,                               // The columns to return
-                null,                                // The columns for the WHERE clause
-                null,                            // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                     // don't filter by row groups
-                sortOrder                                 // The sort order
-        );
-
-
-        c.moveToFirst();
-
+    /**
+     * Deletes single sensor table from db
+     * @param id id of the sensor
+     */
+    public void deleteSensorTable(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("\"" + sensors.get(id).getName() + "\"", null, null);
+        db.close();
     }
-    */
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //this can be empty, is not needed in this application uppgrade fiels
