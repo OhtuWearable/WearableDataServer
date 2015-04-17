@@ -78,7 +78,7 @@ public class StartServerActivity extends Activity
 
     /**
      * Sets sensors available to server
-     * @param List containing all available sensors
+     * @param sensors containing all available sensors
      */
     public void setServerSensors(List<Sensor> sensors){
         if (serviceBound){

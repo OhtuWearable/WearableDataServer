@@ -10,11 +10,10 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.ohtu.wearable.wearabledataservice.sensors.JSONConverter;
 import com.ohtu.wearable.wearabledataservice.sensors.SensorUnit;
 import com.ohtu.wearable.wearabledataservice.sensors.SensorsHandler;
 import com.ohtu.wearable.wearabledataservice.server.FeedsController;
-import com.ohtu.wearable.wearabledataservice.server.SensorDatabase;
+import com.ohtu.wearable.wearabledataservice.sensors.SensorDatabase;
 import com.ohtu.wearable.wearabledataservice.server.SensorHTTPServer;
 
 import org.json.JSONException;
@@ -91,25 +90,43 @@ public class SensorServerService extends Service {
             db = helper.getWritableDatabase();
             //db.isOpen();
             Log.w("DB", "started");
+            testDummyData(helper);
+        }
 
-            //TODO: remove dummy data testing
-            //---- dummy data for testing the database, remove
-            List<Sensor> sensorList = sensorsHandler.getAllSensorsOnDevice();
-            SensorUnit unit = new SensorUnit();
-            unit.setSensor(sensorList.get(2), this);
-            unit.setDummyData();
+        if (serverStarted && serverRunning){
+            if (sensors != null) sensorsHandler.initSensors(sensors);
+
+            Log.w("SERVER", "sensors updated");
+        } else if (serverStarted && !serverRunning) {
+            tryToStartServer();
+        } else {
+            sensorsHandler = new SensorsHandler(sensors, this);
+            FeedsController feedsController = new FeedsController(sensorsHandler);
+            server = new SensorHTTPServer(feedsController);
+
+            tryToStartServer();
+        }
+    }
+
+    //test database with dummy data:
+    private void testDummyData(SensorDatabase helper) {
+        //TODO: remove dummy data testing
+        //---- dummy data for testing the database, remove
+        List<Sensor> sensorList = sensorsHandler.getAllSensorsOnDevice();
+        SensorUnit unit = new SensorUnit();
+        unit.setSensor(sensorList.get(2), this);
+        unit.setDummyData();
+        helper.addSensorUnit(unit);
+        try {
             helper.addSensorUnit(unit);
-            try {
-                helper.addSensorUnit(unit);
-                List<JSONObject>  a = helper.getAllSensorData(unit.getSensorName());
-                //Log.d("getJSONSensorData: ", helper.getJSONSensorData(unit.getSensorName(), 0).toString());
+            List<JSONObject>  a = helper.getAllSensorData(unit.getSensorName());
+            //Log.d("getJSONSensorData: ", helper.getJSONSensorData(unit.getSensorName(), 0).toString());
+            Log.d("JSONOBJECTS AS A LIST: ", a.toString());
+            helper.emptySensorTable(unit.getSensorName());
+            List<JSONObject>  b = helper.getAllSensorData(unit.getSensorName());
+            Log.d("JSONOBJECTS AS A LIST: ", b.toString());
 
-                Log.d("JSONOBJECTS AS A LIST: ", a.toString());
-                helper.deleteEntries();
-                List<JSONObject>  b = helper.getAllSensorData(unit.getSensorName());
-                Log.d("JSONOBJECTS AS A LIST: ", b.toString());
-
-                //helper.createTables();
+            //helper.createTables();
                 /*
                 List<JSONObject>  b = helper.getAllSensorData(unit.getSensorName());
                 Log.d("JSONOBJECTS AS A LIST: ", b.toString());
@@ -127,26 +144,10 @@ public class SensorServerService extends Service {
                 a = helper.getAllSensorData(unit.getSensorName());
                 Log.d("JSONOBJECTS AS A LIST: ", a.toString());
                 */
-            } catch (JSONException e) {
-
-            }
-            //---
+        } catch (JSONException e) {
 
         }
-
-        if (serverStarted && serverRunning){
-            if (sensors != null) sensorsHandler.initSensors(sensors);
-
-            Log.w("SERVER", "sensors updated");
-        } else if (serverStarted && !serverRunning) {
-            tryToStartServer();
-        } else {
-            sensorsHandler = new SensorsHandler(sensors, this);
-            FeedsController feedsController = new FeedsController(sensorsHandler);
-            server = new SensorHTTPServer(feedsController);
-
-            tryToStartServer();
-        }
+        //---
     }
 
     /**
@@ -190,6 +191,7 @@ public class SensorServerService extends Service {
             Toast.makeText(this, "Server failed to start", Toast.LENGTH_SHORT).show();
         }
     }
+
 
 
 

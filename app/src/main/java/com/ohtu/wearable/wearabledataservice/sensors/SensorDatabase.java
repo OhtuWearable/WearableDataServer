@@ -1,4 +1,4 @@
-package com.ohtu.wearable.wearabledataservice.server;
+package com.ohtu.wearable.wearabledataservice.sensors;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,8 +12,6 @@ import java.lang.StringBuilder;
 import java.util.LinkedList;
 import java.util.List;
 import android.util.Log;
-import com.ohtu.wearable.wearabledataservice.sensors.JSONConverter;
-import com.ohtu.wearable.wearabledataservice.sensors.SensorUnit;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,7 +22,6 @@ public class SensorDatabase extends SQLiteOpenHelper {
     // Database Name
     private static final String DATABASE_NAME = "SensorDB";
     private static final String KEY_ID = "id";
-    public static final String COLUMN_TIME_STAMP = "timestamp";
     private static final String KEY_DATA = "data";
     private static final String[] COLUMNS = {KEY_ID, KEY_DATA};
 
@@ -52,8 +49,6 @@ public class SensorDatabase extends SQLiteOpenHelper {
             help.append("\"" + sensors.get(i).getName() + "\"");
             help.append(" ( " +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, ");
-            //timestamp is already added in the SensorUnit.values
-            //help.append(COLUMN_TIME_STAMP + " INTEGER, ");
             help.append(KEY_DATA + " TEXT NOT NULL);");
 
             Log.d("SensorDatabase query" , help.toString());
@@ -63,7 +58,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
     }
 
     /**
-     * Add sensorUnit and all it's values to the database
+     * Add sensorUnit and its values to the database.
      * @param unit SensorUnit containing the sensor data
      */
     public void addSensorUnit(SensorUnit unit){
@@ -92,14 +87,14 @@ public class SensorDatabase extends SQLiteOpenHelper {
         // 4. close
         db.close();
     }
-    /*
+
     /** Get JSONObject from a specific db entry
      *
      * @param sensorName sensor.getName()
      * @param id id of the entry
      * @return JSONObject of the item of wanted id
      */
-    /*
+
     public JSONObject getJSONSensorData(String sensorName, int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -137,7 +132,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
      * @param id id of the entry
      * @return int i
      */
-    /*
+
     public int updateDataEntry(SensorUnit unit, int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -154,11 +149,13 @@ public class SensorDatabase extends SQLiteOpenHelper {
         db.close();
         return i;
     }
-    */
+
 
     /**
-     * @param sensorName Name of the sensor
-     * @return A Linked List containing all the JSONObjects containing values
+     * Gets all the JSON data associated with the sensor.
+     * Goes through all the entries in the database and collects data from each event to a list.
+     * @param sensorName Name of the sensor.
+     * @return A Linked List containing all the JSONObjects in the database.
      * @throws JSONException
      */
     public List<JSONObject> getAllSensorData(String sensorName) throws JSONException {
@@ -178,7 +175,6 @@ public class SensorDatabase extends SQLiteOpenHelper {
 
                 String jsonString = cursor.getString(cursor.getColumnIndex("data"));
                 JSONObject jsonObject = new JSONObject(jsonString);
-                //String name = (String) jsonObject.get("sensor");
                 data = (JSONObject) jsonObject.get("data");
                 objectList.add(data);
 
@@ -189,14 +185,13 @@ public class SensorDatabase extends SQLiteOpenHelper {
     }
 
     /**
-     * Deletes all entries in the database.
+     * Deletes all entries of all tables in the database.
      */
     public void deleteEntries() {
         Log.d("SensorDatabase", "Dropping all tables");
         SQLiteDatabase db = this.getWritableDatabase();
         for (int i = 0; i < sensors.size(); i++) {
             db.delete("\"" + sensors.get(i).getName() + "\"", null, null);
-            //db.execSQL("DROP TABLE IF EXISTS " + "\"" + sensors.get(i).getName() + "\"");
         }
         db.close();
     }
@@ -214,8 +209,8 @@ public class SensorDatabase extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //this can be empty, is not needed in this application uppgrade fiels
-        dropTables();
-        createTables(db);
+        //dropTables();
+        //createTables(db);
     }
 
     /**
