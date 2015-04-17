@@ -22,6 +22,7 @@ import com.ohtu.wearable.wearabledataservice.sensors.SensorUnit;
 import com.ohtu.wearable.wearabledataservice.sensors.SensorsHandler;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class SensorDatabase extends SQLiteOpenHelper {
@@ -57,6 +58,10 @@ public class SensorDatabase extends SQLiteOpenHelper {
         Log.d("SensorDatabase", "**************************** Database created");
     }
 
+    /**
+     * Create tables for all the sensors in the database.
+     * @param db Database where the sensors are created.
+     */
     public void createTables(SQLiteDatabase db) {
         StringBuilder help;
         for (int i = 0; i < sensors.size(); i++) {
@@ -75,6 +80,10 @@ public class SensorDatabase extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * Drops all the tables in the database.
+     * @param db Database where the sensors are deleted.
+     */
     public void dropTables(SQLiteDatabase db) {
         StringBuilder help;
         for (int i = 0; i < sensors.size(); i++) {
@@ -83,16 +92,11 @@ public class SensorDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void testIfTableExists() {
-
-    }
-
-
     /**
+     * Add sensorUnit and all it's values to the database
      * @param unit SensorUnit containing the sensor data
      */
     public void addSensorUnit(SensorUnit unit){
-    //
         //for logging
         Log.d("addSensor ", unit.getSensorName());
 
@@ -118,6 +122,37 @@ public class SensorDatabase extends SQLiteOpenHelper {
 
         // 4. close
         db.close();
+    }
+
+    /** Get sensor data as an JSONObject */
+    public JSONObject getJSONSensorData(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String help = "TABLE_" + "\"" + sensors.get(id).getName() + "\"";
+        Cursor cursor = db.query(help,
+                COLUMNS,
+                "id = ?",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                null,
+                null);
+
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        SensorUnit sensorUnit = new SensorUnit();
+        String jsonString = cursor.getString(2);
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            String name = (String) jsonObject.get("sensor");
+            JSONObject data = (JSONObject) jsonObject.get("data");
+
+            return data;
+        } catch(JSONException e) {
+
+        }
+        return null;
     }
 
     /*
