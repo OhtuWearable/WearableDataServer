@@ -14,7 +14,6 @@ import java.util.List;
 import android.util.Log;
 import com.ohtu.wearable.wearabledataservice.sensors.JSONConverter;
 import com.ohtu.wearable.wearabledataservice.sensors.SensorUnit;
-import com.ohtu.wearable.wearabledataservice.sensors.SensorsHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,10 +37,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d("SensorDatabase", "********************************************************");
-
-        // TODO: Checking is table already in Database
         createTables(db);
-
         Log.d("SensorDatabase", "**************************** Database created");
     }
 
@@ -59,7 +55,6 @@ public class SensorDatabase extends SQLiteOpenHelper {
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, ");
             //timestamp is already added in the SensorUnit.values
             //help.append(COLUMN_TIME_STAMP + " INTEGER, ");
-
             help.append(KEY_DATA + " TEXT NOT NULL);");
 
             Log.d("SensorDatabase query" , help.toString());
