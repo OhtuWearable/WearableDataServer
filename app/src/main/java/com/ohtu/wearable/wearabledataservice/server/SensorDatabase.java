@@ -26,7 +26,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
     private static final String KEY_ID = "id";
     public static final String COLUMN_TIME_STAMP = "timestamp";
     private static final String KEY_DATA = "data";
-    private static final String[] COLUMNS = {KEY_ID, COLUMN_TIME_STAMP, KEY_DATA};
+    private static final String[] COLUMNS = {KEY_ID, KEY_DATA};
 
     public SensorDatabase(Context context, List<Sensor> sensors) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

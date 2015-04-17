@@ -58,7 +58,7 @@ public class JSONConverter {
         return jsonObject;
     }
 
-    /** add sensorevent data to database */
+    /** add SensorUnit data to database */
     public static JSONObject convertToDatabaseJSON(SensorUnit unit) {
         try {
             JSONObject jEntry = new JSONObject();
