@@ -85,25 +85,10 @@ public class SensorServerService extends Service {
      */
     public void startServer(List<Sensor> sensors){
         if (db == null && sensors != null) {
-            //delete database first for testing purposes:
-            //this.deleteDatabase("SensorDB.db");
-            //Log.d("DB", "deleting database");
             SensorDatabase helper = new SensorDatabase(this, sensorsHandler.getAllSensorsOnDevice());
-            //MySQLiteHelper helper = new MySQLiteHelper(this, sensorsHandler.getAllSensorsOnDevice());
             db = helper.getWritableDatabase();
             //db.isOpen();
             Log.w("DB", "started");
-            try {
-                System.out.println("\n");
-                System.out.println("\n");
-                System.out.println(JSONConverter.convertSensorListToJSON(sensorsHandler.getAllSensorsOnDevice()));
-                System.out.println("\n");
-            } catch (JSONException e){
-
-            }
-
-
-
         }
 
         if (serverStarted && serverRunning){
@@ -143,7 +128,8 @@ public class SensorServerService extends Service {
 
     @Override
     public void onDestroy (){
-        //if service is destroyed stop server
+        //if service is destroyed stop server and close database
+        db.close();
         sensorsHandler.stopSensors();
         server.stop();
     }

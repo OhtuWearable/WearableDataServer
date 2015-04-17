@@ -104,15 +104,16 @@ public class SensorDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
-    /**
-     * Get sensor data as an JSONObject
-     * @param id id of the sensor
-     * @return JSONObject containing values from sensorUnit by JSONConverter's convertToJSON-method
+    /** Get JSONObject from a specific db entry
+     *
+     * @param sensorName sensor.getName()
+     * @param id id of the entry
+     * @return JSONObject of the item of wanted id
      */
-    public JSONObject getJSONSensorData(int id) {
+    public JSONObject getJSONSensorData(String sensorName, int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String help = "TABLE_" + "\"" + sensors.get(id).getName() + "\"";
+        String help = "TABLE_" + "\"" + sensorName + "\"";
         Cursor cursor = db.query(help,
                 COLUMNS,
                 "id = ?",
@@ -140,8 +141,32 @@ public class SensorDatabase extends SQLiteOpenHelper {
     }
 
     /**
+     * Updates a single data entry for sensorUnit
+     * @param unit SensorUnit containing the sensor data
+     * @param id id of the entry
+     * @return int i
+     */
+    public int updateDataEntry(SensorUnit unit, int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String help = "TABLE_" + "\"" + unit.getSensorName() + "\"";
+
+        ContentValues values = new ContentValues();
+        JSONObject jEntry = JSONConverter.convertToDatabaseJSON(unit);
+        values.put(KEY_DATA, jEntry.toString());
+
+        int i = db.update(help,
+                values,
+                KEY_ID+" = ?",
+                new String[]{String.valueOf(id)});
+        db.close();
+        return i;
+    }
+
+
+    /**
      * @param sensorName Name of the sensor
-     * @return A Linked List containing all the JSONObject containing data
+     * @return A Linked List containing all the JSONObjects containing values
      * @throws JSONException
      */
     public List<JSONObject> getAllSensorData(String sensorName) throws JSONException {
