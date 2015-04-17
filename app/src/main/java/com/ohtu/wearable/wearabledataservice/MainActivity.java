@@ -96,7 +96,7 @@ public class MainActivity extends FragmentActivity implements SelectedSensorsInt
 
     /**
      * Sets sensors available to server
-     * @param list of sensors.
+     * @param sensors List of sensors.
      */
     public void setServerSensors(List<Sensor> sensors){
         if (serviceBound){

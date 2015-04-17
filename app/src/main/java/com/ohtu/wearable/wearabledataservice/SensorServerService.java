@@ -92,21 +92,44 @@ public class SensorServerService extends Service {
             //db.isOpen();
             Log.w("DB", "started");
 
-
             //TODO: remove dummy data testing
             //---- dummy data for testing the database, remove
             List<Sensor> sensorList = sensorsHandler.getAllSensorsOnDevice();
             SensorUnit unit = new SensorUnit();
             unit.setSensor(sensorList.get(2), this);
+            unit.setDummyData();
             helper.addSensorUnit(unit);
             try {
+                helper.addSensorUnit(unit);
                 List<JSONObject>  a = helper.getAllSensorData(unit.getSensorName());
+                //Log.d("getJSONSensorData: ", helper.getJSONSensorData(unit.getSensorName(), 0).toString());
+
                 Log.d("JSONOBJECTS AS A LIST: ", a.toString());
+                helper.deleteEntries();
+                List<JSONObject>  b = helper.getAllSensorData(unit.getSensorName());
+                Log.d("JSONOBJECTS AS A LIST: ", b.toString());
+
+                //helper.createTables();
+                /*
+                List<JSONObject>  b = helper.getAllSensorData(unit.getSensorName());
+                Log.d("JSONOBJECTS AS A LIST: ", b.toString());
+                unit.setDummyData2();
+                Log.d("asdf" , unit.getSensorData().toString());
+                helper.updateDataEntry(unit, 0);
+                a = helper.getAllSensorData(unit.getSensorName());
+                Log.d("JSONOBJECTS AS A LIST: ", a.toString());
+
+                /*
+                helper.addSensorUnit(unit);
+                a = helper.getAllSensorData(unit.getSensorName());
+                Log.d("JSONOBJECTS AS A LIST: ", a.toString());
+                helper.deleteEntries();
+                a = helper.getAllSensorData(unit.getSensorName());
+                Log.d("JSONOBJECTS AS A LIST: ", a.toString());
+                */
             } catch (JSONException e) {
 
             }
-
-
             //---
 
         }

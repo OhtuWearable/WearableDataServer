@@ -43,7 +43,6 @@ public class SensorDatabase extends SQLiteOpenHelper {
 
     /**
      * Create tables for all the sensors in the database.
-     * @param db Database where the sensors are created.
      */
     public void createTables(SQLiteDatabase db) {
         StringBuilder help;
@@ -61,17 +60,6 @@ public class SensorDatabase extends SQLiteOpenHelper {
 
             db.execSQL(help.toString());
         }
-    }
-
-    /**
-     * Drops all the tables in the database.
-     * @param db Database where the sensors are deleted.
-     */
-    public void dropTables(SQLiteDatabase db) {
-        for (int i = 0; i < sensors.size(); i++) {
-            db.delete("\"" + sensors.get(i).getName() + "\"", null, null);
-        }
-        db.close();
     }
 
     /**
@@ -104,13 +92,14 @@ public class SensorDatabase extends SQLiteOpenHelper {
         // 4. close
         db.close();
     }
-
+    /*
     /** Get JSONObject from a specific db entry
      *
      * @param sensorName sensor.getName()
      * @param id id of the entry
      * @return JSONObject of the item of wanted id
      */
+    /*
     public JSONObject getJSONSensorData(String sensorName, int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -148,6 +137,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
      * @param id id of the entry
      * @return int i
      */
+    /*
     public int updateDataEntry(SensorUnit unit, int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -164,7 +154,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
         db.close();
         return i;
     }
-
+    */
 
     /**
      * @param sensorName Name of the sensor
@@ -194,25 +184,51 @@ public class SensorDatabase extends SQLiteOpenHelper {
 
             } while (cursor.moveToNext());
         }
-
+        db.close();
         return objectList;
     }
 
     /**
-     * Deletes single sensor table from db
-     * @param id id of the sensor
+     * Deletes all entries in the database.
      */
-    public void deleteSensorTable(int id) {
+    public void deleteEntries() {
+        Log.d("SensorDatabase", "Dropping all tables");
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete("\"" + sensors.get(id).getName() + "\"", null, null);
+        for (int i = 0; i < sensors.size(); i++) {
+            db.delete("\"" + sensors.get(i).getName() + "\"", null, null);
+            //db.execSQL("DROP TABLE IF EXISTS " + "\"" + sensors.get(i).getName() + "\"");
+        }
+        db.close();
+    }
+
+    /**
+     * Empties a single sensor table from the database
+     * @param sensorName name of the sensor
+     */
+    public void emptySensorTable(String sensorName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("\"" + sensorName + "\"", null, null);
         db.close();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //this can be empty, is not needed in this application uppgrade fiels
-        dropTables(db);
+        dropTables();
         createTables(db);
+    }
+
+    /**
+     * Drops all the tables in the database.
+     */
+    public void dropTables() {
+        Log.d("SensorDatabase", "Dropping all tables");
+        SQLiteDatabase db = this.getWritableDatabase();
+        for (int i = 0; i < sensors.size(); i++) {
+            //db.delete("\"" + sensors.get(i).getName() + "\"", null, null);
+            db.execSQL("DROP TABLE IF EXISTS " + "\"" + sensors.get(i).getName() + "\"");
+        }
+        db.close();
     }
 }
 

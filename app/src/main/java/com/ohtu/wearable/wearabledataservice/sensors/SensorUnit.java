@@ -179,6 +179,13 @@ public class SensorUnit implements SensorEventListener{
         }
         data[3] = System.currentTimeMillis();
     }
+    public void setDummyData2() {
+        data[0] = 6;
+        data[1] = 6;
+        data[2] = 6;
+        data[3] = System.currentTimeMillis();
+    }
+
 
 }
 

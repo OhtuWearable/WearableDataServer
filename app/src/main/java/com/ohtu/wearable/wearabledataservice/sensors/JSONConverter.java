@@ -63,17 +63,11 @@ public class JSONConverter {
     public static JSONObject convertToDatabaseJSON(SensorUnit unit) {
         try {
             JSONObject jEntry = new JSONObject();
-            //jEntry.put("id", id);
             jEntry.put("sensor", unit.getSensorName());
-            //jEntry.put("timestamp", timestamp.getTime());
-            //TODO: remove dummydata when testing is done
-            unit.setDummyData();
-            Log.d("JSONConverter", "" + unit.getSensorData());
             jEntry.put("data", unit.getSensorData());
-
             return jEntry;
         } catch (JSONException e) {
-            Log.e("convertToDatabaseJSON", "Could not generate the JSON object for the feed entry");
+            Log.e("convertToDatabaseJSON", "Could not generate the JSON object for the database entry");
             return null;
         }
     }
