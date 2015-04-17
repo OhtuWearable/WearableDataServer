@@ -9,6 +9,7 @@ import android.hardware.Sensor;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.StringBuilder;
+import java.util.LinkedList;
 import java.util.List;
 import android.util.Log;
 import com.ohtu.wearable.wearabledataservice.sensors.JSONConverter;
@@ -25,12 +26,8 @@ public class SensorDatabase extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "SensorDB";
     private static final String KEY_ID = "id";
     public static final String COLUMN_TIME_STAMP = "timestamp";
-
     private static final String KEY_DATA = "data";
-
     private static final String[] COLUMNS = {KEY_ID, COLUMN_TIME_STAMP, KEY_DATA};
-
-    private SensorsHandler sensorsHandler;
 
     public SensorDatabase(Context context, List<Sensor> sensors) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -60,7 +57,9 @@ public class SensorDatabase extends SQLiteOpenHelper {
             help.append("\"" + sensors.get(i).getName() + "\"");
             help.append(" ( " +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, ");
-            help.append(COLUMN_TIME_STAMP + " INTEGER, ");
+            //timestamp is already added in the SensorUnit.values
+            //help.append(COLUMN_TIME_STAMP + " INTEGER, ");
+
             help.append(KEY_DATA + " TEXT NOT NULL);");
 
             Log.d("SensorDatabase query" , help.toString());
@@ -85,13 +84,10 @@ public class SensorDatabase extends SQLiteOpenHelper {
      * @param unit SensorUnit containing the sensor data
      */
     public void addSensorUnit(SensorUnit unit){
-        //TODO: add timestamps
         //for logging
         Log.d("addSensor ", unit.getSensorName());
-
         // 1. get reference to writable DB
         SQLiteDatabase db = this.getWritableDatabase();
-
         // 2. create ContentValues to add key "column"/value
         ContentValues values = new ContentValues();
         //get unit data values and convert them to JSON:
@@ -116,7 +112,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
     /**
      * Get sensor data as an JSONObject
      * @param id id of the sensor
-     * @return JSONObject containing double data[] values from SensorUnit as converted by JSONConverter's convertToJSON-method
+     * @return JSONObject containing values from sensorUnit by JSONConverter's convertToJSON-method
      */
     public JSONObject getJSONSensorData(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -146,6 +142,36 @@ public class SensorDatabase extends SQLiteOpenHelper {
         }
         cursor.close();
         return null;
+    }
+
+    /**
+     * @param sensorName Name of the sensor
+     * @return A Linked List containing all the JSONObject containing data
+     * @throws JSONException
+     */
+    public List<JSONObject> getAllSensorData(String sensorName) throws JSONException {
+        List<JSONObject> objectList = new LinkedList<JSONObject>();
+
+        String query = "SELECT * FROM TABLE_" + "\"" + sensorName+ "\"";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        JSONObject data = null;
+
+        if (cursor.moveToFirst()) {
+            do {
+                data = new JSONObject();
+                String jsonString = cursor.getString(2);
+                JSONObject jsonObject = new JSONObject(jsonString);
+                //String name = (String) jsonObject.get("sensor");
+                data = (JSONObject) jsonObject.get("data");
+                objectList.add(data);
+
+            } while (cursor.moveToNext());
+        }
+
+        return objectList;
     }
 
     /**
