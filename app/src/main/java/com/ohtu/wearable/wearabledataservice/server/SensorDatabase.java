@@ -80,7 +80,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
      */
     public void addSensorUnit(SensorUnit unit){
         //for logging
-        Log.d("addSensor ", unit.getSensorName());
+        Log.d("SensorDatabase", "adding sensor: " + unit.getSensorName());
         // 1. get reference to writable DB
         SQLiteDatabase db = this.getWritableDatabase();
         // 2. create ContentValues to add key "column"/value
@@ -88,12 +88,13 @@ public class SensorDatabase extends SQLiteOpenHelper {
         //get unit data values and convert them to JSON:
         JSONObject jEntry = JSONConverter.convertToDatabaseJSON(unit);
         //add jsonObject to database as a string:
-        values.put(KEY_DATA, jEntry.toString());
         Log.d("SensorDatabase", "JSON entry as a string: " + jEntry.toString());
 
+        values.put(KEY_DATA, jEntry.toString());
         //get table name:
-        String help = "TABLE_" + "\"" + unit.getSensorName()+ "\"";
-        Log.d("MySQLiteHelper", "addSensorEvent query: " + help);
+        String help = "\"" + unit.getSensorName()+ "\"";
+
+        Log.d("SensorDatabase", "addSensorEvent query: " + help);
 
         // 3. insert
         db.insert(help, // table
@@ -113,7 +114,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
     public JSONObject getJSONSensorData(String sensorName, int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String help = "TABLE_" + "\"" + sensorName + "\"";
+        String help = "\"" + sensorName + "\"";
         Cursor cursor = db.query(help,
                 COLUMNS,
                 "id = ?",
@@ -123,20 +124,21 @@ public class SensorDatabase extends SQLiteOpenHelper {
                 null,
                 null);
 
-        if (cursor != null)
+        if (cursor != null) {
             cursor.moveToFirst();
 
-        String jsonString = cursor.getString(2);
-        try {
-            JSONObject jsonObject = new JSONObject(jsonString);
-            String name = (String) jsonObject.get("sensor");
-            JSONObject data = (JSONObject) jsonObject.get("data");
-            cursor.close();
-            return data;
-        } catch(JSONException e) {
+                try {
+                    String jsonString = cursor.getString(cursor.getColumnIndex("data"));
+                    JSONObject jsonObject = new JSONObject(jsonString);
+                    String name = (String) jsonObject.get("sensor");
+                    JSONObject data = (JSONObject) jsonObject.get("data");
+                    cursor.close();
+                    return data;
+                } catch(JSONException e) {
 
+            }
+            cursor.close();
         }
-        cursor.close();
         return null;
     }
 
@@ -149,7 +151,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
     public int updateDataEntry(SensorUnit unit, int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String help = "TABLE_" + "\"" + unit.getSensorName() + "\"";
+        String help = "\"" + unit.getSensorName()+ "\"";
 
         ContentValues values = new ContentValues();
         JSONObject jEntry = JSONConverter.convertToDatabaseJSON(unit);
@@ -170,10 +172,11 @@ public class SensorDatabase extends SQLiteOpenHelper {
      * @throws JSONException
      */
     public List<JSONObject> getAllSensorData(String sensorName) throws JSONException {
-        List<JSONObject> objectList = new LinkedList<JSONObject>();
+        Log.d("SensorDatabase","Getting all data");
+        List<JSONObject> objectList = new LinkedList<>();
 
-        String query = "SELECT * FROM TABLE_" + "\"" + sensorName+ "\"";
-
+        String query = "SELECT * FROM " + "\"" + sensorName+ "\"";
+        Log.d("SensorDatabase", "Get all items query: " + query);
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
@@ -182,7 +185,8 @@ public class SensorDatabase extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 data = new JSONObject();
-                String jsonString = cursor.getString(2);
+
+                String jsonString = cursor.getString(cursor.getColumnIndex("data"));
                 JSONObject jsonObject = new JSONObject(jsonString);
                 //String name = (String) jsonObject.get("sensor");
                 data = (JSONObject) jsonObject.get("data");

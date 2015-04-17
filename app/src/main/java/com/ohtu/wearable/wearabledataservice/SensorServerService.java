@@ -11,12 +11,14 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.ohtu.wearable.wearabledataservice.sensors.JSONConverter;
+import com.ohtu.wearable.wearabledataservice.sensors.SensorUnit;
 import com.ohtu.wearable.wearabledataservice.sensors.SensorsHandler;
 import com.ohtu.wearable.wearabledataservice.server.FeedsController;
 import com.ohtu.wearable.wearabledataservice.server.SensorDatabase;
 import com.ohtu.wearable.wearabledataservice.server.SensorHTTPServer;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
@@ -89,6 +91,24 @@ public class SensorServerService extends Service {
             db = helper.getWritableDatabase();
             //db.isOpen();
             Log.w("DB", "started");
+
+
+            //TODO: remove dummy data testing
+            //---- dummy data for testing the database, remove
+            List<Sensor> sensorList = sensorsHandler.getAllSensorsOnDevice();
+            SensorUnit unit = new SensorUnit();
+            unit.setSensor(sensorList.get(2), this);
+            helper.addSensorUnit(unit);
+            try {
+                List<JSONObject>  a = helper.getAllSensorData(unit.getSensorName());
+                Log.d("JSONOBJECTS AS A LIST: ", a.toString());
+            } catch (JSONException e) {
+
+            }
+
+
+            //---
+
         }
 
         if (serverStarted && serverRunning){
