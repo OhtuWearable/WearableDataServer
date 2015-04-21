@@ -6,6 +6,8 @@ import android.hardware.SensorManager;
 import android.util.Log;
 
 
+import com.ohtu.wearable.wearabledataservice.SensorDatabaseHelper;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,6 +41,8 @@ public class SensorsHandler {
      * Context of the activity
      */
     private Context context;
+
+    private SensorDatabaseHelper dbHelper;
 
     /**
      * Constructor for SensorsHandler
@@ -169,6 +173,4 @@ public class SensorsHandler {
         }
         return sList;
     }
-
-
 }

@@ -93,6 +93,7 @@ public class SensorServerService extends Service {
                 if (dbHelper != null) {
                     dbHelper.insertSensorData(sensors);
                 }
+
             }
             Log.w("SERVER", "sensors updated");
         } else if (serverStarted && !serverRunning) {

@@ -9,9 +9,11 @@ import com.ohtu.wearable.wearabledataservice.sensors.SensorDatabase;
 import com.ohtu.wearable.wearabledataservice.sensors.SensorUnit;
 import com.ohtu.wearable.wearabledataservice.sensors.SensorsHandler;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -21,6 +23,7 @@ public class SensorDatabaseHelper {
     private SensorsHandler sensorsHandler;
     private SensorDatabase sensorDatabase;
     private SQLiteDatabase db;
+    private List<Sensor> sensors;
 
     public SensorDatabaseHelper(SensorsHandler handler) {
         this.sensorsHandler = handler;
@@ -34,6 +37,7 @@ public class SensorDatabaseHelper {
     public void startDatabase(Context context, List<Sensor> sensors) {
         if (db == null && sensors != null) {
             sensorDatabase = new SensorDatabase(context, sensors);
+            this.sensors = sensors;
             //drop old tables and create new ones:
             sensorDatabase.restart();
             //not-so-hard reset:
@@ -74,6 +78,22 @@ public class SensorDatabaseHelper {
      */
     public List<JSONObject> getAllSensorData(String sensorName) throws JSONException{
         return sensorDatabase.getAllSensorData(sensorName);
+    }
+
+    /**
+     * Return all sensor data as JSONArray
+     * @param sensor Sensor
+     * @return JSONArray
+     * @throws JSONException
+     */
+    public JSONArray getJSONArray(Sensor sensor) throws JSONException {
+        List<JSONObject> data = sensorDatabase.getAllSensorData(sensor.getName());
+        JSONArray jsonArray = new JSONArray();
+        for (JSONObject o : data) {
+           jsonArray.put(o);
+        }
+        Log.d("JSONArray: ", jsonArray.toString());
+        return jsonArray;
     }
 
     /**
