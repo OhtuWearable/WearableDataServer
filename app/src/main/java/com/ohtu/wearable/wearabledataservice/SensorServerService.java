@@ -83,6 +83,7 @@ public class SensorServerService extends Service {
     public void startServer(List<Sensor> sensors){
         if (dbHelper != null) {
             dbHelper.startDatabase(this, sensorsHandler.getAllSensorsOnDevice());
+            sensorsHandler.setSdbHelper(dbHelper);
         }
 
         if (serverStarted && serverRunning){

@@ -47,6 +47,8 @@ public class FeedsController {
             return sensorDataResponse(sensor);
         } else if (method.equals("POST")) {
             return new NanoHTTPD.Response(NanoHTTPD.Response.Status.METHOD_NOT_ALLOWED, NanoHTTPD.MIME_PLAINTEXT, "Not implemented");
+        } else if (sensorsHandler.sensorIsActive(sensor) && uri.equalsIgnoreCase("/" + sensor + "/all") && method.equals("GET")) {
+            return sensorDataResponseFromDb(sensor);
         } else {
             return notFoundResponse();
         }
@@ -65,6 +67,14 @@ public class FeedsController {
         try {
             return new NanoHTTPD.Response(sensorsHandler.getSensorData(sensor).toString());
         } catch (JSONException e) {
+            return errorResponse(e.toString());
+        }
+    }
+
+    private NanoHTTPD.Response sensorDataResponseFromDb(int sensor){
+        try {
+            return new NanoHTTPD.Response(sensorsHandler.getAllSensorDataFromDb(sensor).toString());
+        } catch (Exception e) {
             return errorResponse(e.toString());
         }
     }
