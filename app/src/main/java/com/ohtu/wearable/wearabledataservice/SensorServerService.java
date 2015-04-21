@@ -98,7 +98,7 @@ public class SensorServerService extends Service {
             if (sensors != null) {
                 sensorsHandler.initSensors(sensors);
 
-                //Add selected sensor items to database:
+                //Saves all data from selected sensors to database every time the list is updated:
                 if (sensorDatabase != null) {
                     //on list update, add all sensor units to database:
                     List<SensorUnit> units = sensorsHandler.getSensorUnits(sensors);

@@ -74,7 +74,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
         //get table name:
         String help = "\"" + unit.getSensorName()+ "\"";
 
-        Log.d("SensorDatabase", "addSensorEvent query: " + help);
+        //Log.d("SensorDatabase", "addSensorEvent query: " + help);
 
         // 3. insert
         db.insert(help, // table

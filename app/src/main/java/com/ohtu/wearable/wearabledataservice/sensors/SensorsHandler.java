@@ -163,7 +163,6 @@ public class SensorsHandler {
         List<SensorUnit> sList = new ArrayList<>();
         for (Sensor s : sensors) {
             if (this.sensors.contains(s)) {
-                //Log.d("Adding sensor ", s.getName());
                 SensorUnit unit = sensorMap.get(s.getType());
                 //set dummyData for testing:
                 //unit.setDummyData();
