@@ -67,7 +67,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
         values.put(KEY_DATA, jEntry.toString());
         String tableName = "\"" + unit.getSensorName()+ "\"";
 
-        //Log.d("SensorDatabase", "addSensorEvent query: " + help);
+        Log.d("SensorDatabase", "addSensorEvent query: " + tableName);
 
         //Insert into database:
         db.insert(tableName,
@@ -84,7 +84,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
      * @throws JSONException
      */
     public List<JSONObject> getAllSensorData(String sensorName) throws JSONException {
-        //Log.d("SensorDatabase","Getting all data");
+        Log.d("SensorDatabase","Getting all data");
         List<JSONObject> objectList = new LinkedList<>();
         String query = "SELECT * FROM " + "\"" + sensorName+ "\"";
         SQLiteDatabase db = this.getWritableDatabase();

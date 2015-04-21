@@ -66,8 +66,9 @@ public class JSONConverter {
     public static JSONObject convertToDatabaseJSON(SensorUnit unit) {
         try {
             JSONObject jEntry = new JSONObject();
-            jEntry.put("sensor", unit.getSensorName());
+            //jEntry.put("sensor", unit.getSensorName());
             jEntry.put("data", unit.getSensorData());
+
             return jEntry;
         } catch (JSONException e) {
             Log.e("convertToDatabaseJSON", "Could not generate the JSON object for the database entry");

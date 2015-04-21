@@ -155,7 +155,7 @@ public class SensorsHandler {
     }
 
     /**
-     * Returns SensorUnit instances of selected sensors.
+     * Returns SensorUnits of selected sensors.
      * @param sensors List of selected Sensors
      * @return List of SensorUnit objects.
      */
@@ -171,18 +171,4 @@ public class SensorsHandler {
     }
 
 
-    /**
-     *
-     * @param sensorDatabase
-     * @param sensors
-     */
-    public SensorDatabase updateSensorUnitDatabase(SensorDatabase sensorDatabase, List<Sensor> sensors) {
-        for (Sensor s : sensors) {
-            if (!this.sensors.contains(s)) {
-                Log.d("Adding sensor ", s.getName());
-                sensorDatabase.addSensorUnit(sensorMap.get(s.getType()));
-            }
-        }
-       return sensorDatabase;
-    }
 }

@@ -10,14 +10,10 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.ohtu.wearable.wearabledataservice.sensors.SensorUnit;
 import com.ohtu.wearable.wearabledataservice.sensors.SensorsHandler;
 import com.ohtu.wearable.wearabledataservice.server.FeedsController;
 import com.ohtu.wearable.wearabledataservice.sensors.SensorDatabase;
 import com.ohtu.wearable.wearabledataservice.server.SensorHTTPServer;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,6 +28,7 @@ public class SensorServerService extends Service {
     private boolean serviceStarted = false;
     private SensorHTTPServer server;
     private SensorsHandler sensorsHandler;
+    private SensorDatabaseHelper dbHelper;
     SensorDatabase sensorDatabase;
     SQLiteDatabase db;
 
@@ -79,32 +76,22 @@ public class SensorServerService extends Service {
         return START_STICKY;
     }
 
-
-
     /**
      * Start the HTTP server and database if it's not running,
      * Otherwise updates selected sensors and database entries for them.
      */
     public void startServer(List<Sensor> sensors){
-        if (db == null && sensors != null) {
-            sensorDatabase = new SensorDatabase(this, sensorsHandler.getAllSensorsOnDevice());
-            //drop old tables and create new ones:
-            sensorDatabase.restart();
-            //not-so-hard reset:
-            //sensorDatabase.deleteEntries();
-            db = sensorDatabase.getWritableDatabase();
-            Log.w("DB", "started");
+        if (dbHelper != null) {
+            dbHelper.startDatabase(this, sensorsHandler.getAllSensorsOnDevice());
         }
 
         if (serverStarted && serverRunning){
             if (sensors != null) {
                 sensorsHandler.initSensors(sensors);
+
                 //Saves all data from selected sensors to database every time the list is updated:
-                if (sensorDatabase != null) {
-                    List<SensorUnit> units = sensorsHandler.getSensorUnits(sensors);
-                    for (SensorUnit unit : units) {
-                        sensorDatabase.addSensorUnit(unit);
-                    }
+                if (dbHelper != null) {
+                    dbHelper.insertSensorData(sensors);
                 }
             }
             Log.w("SERVER", "sensors updated");
@@ -113,6 +100,7 @@ public class SensorServerService extends Service {
         } else {
             sensorsHandler = new SensorsHandler(sensors, this);
             FeedsController feedsController = new FeedsController(sensorsHandler);
+            dbHelper = new SensorDatabaseHelper(sensorsHandler);
             server = new SensorHTTPServer(feedsController);
             tryToStartServer();
         }
@@ -138,13 +126,12 @@ public class SensorServerService extends Service {
         return serverRunning;
     }
 
-    /** If service is destroyed, stop server and empty and close the database */
+    /** If service is destroyed, stop server */
     @Override
     public void onDestroy (){
         sensorsHandler.stopSensors();
         server.stop();
-        sensorDatabase.deleteEntries();
-        db.close();
+        dbHelper.close();
     }
 
     private void tryToStartServer(){
