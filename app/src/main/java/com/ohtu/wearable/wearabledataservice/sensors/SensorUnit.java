@@ -167,25 +167,5 @@ public class SensorUnit implements SensorEventListener{
     public String getSensorName() {
         return this.sensor.getName();
     }
-
-    //TODO: remove dummy data
-    /**
-     * Set dummy data for testing database
-     */
-    public void setDummyData() {
-        data = new double[4];
-        for (int i = 0; i< 3;i++) {
-            data[i] = i;
-        }
-        data[3] = System.currentTimeMillis();
-    }
-    public void setDummyData2() {
-        data[0] = 6;
-        data[1] = 6;
-        data[2] = 6;
-        data[3] = System.currentTimeMillis();
-    }
-
-
 }
 

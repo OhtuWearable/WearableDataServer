@@ -90,7 +90,6 @@ public class SensorServerService extends Service {
             sensorDatabase = new SensorDatabase(this, sensorsHandler.getAllSensorsOnDevice());
             //drop old tables and create new ones:
             sensorDatabase.restart();
-
             //not-so-hard reset:
             //sensorDatabase.deleteEntries();
             db = sensorDatabase.getWritableDatabase();
@@ -103,9 +102,7 @@ public class SensorServerService extends Service {
                 //Saves all data from selected sensors to database every time the list is updated:
                 if (sensorDatabase != null) {
                     List<SensorUnit> units = sensorsHandler.getSensorUnits(sensors);
-                    String s = "";
                     for (SensorUnit unit : units) {
-                        s = unit.getSensorName();
                         sensorDatabase.addSensorUnit(unit);
                     }
                 }
@@ -117,7 +114,6 @@ public class SensorServerService extends Service {
             sensorsHandler = new SensorsHandler(sensors, this);
             FeedsController feedsController = new FeedsController(sensorsHandler);
             server = new SensorHTTPServer(feedsController);
-
             tryToStartServer();
         }
     }

@@ -155,17 +155,15 @@ public class SensorsHandler {
     }
 
     /**
-     * Returns all SensorUnits of selected sensors.
-     * @param sensors
-     * @return
+     * Returns SensorUnit instances of selected sensors.
+     * @param sensors List of selected Sensors
+     * @return List of SensorUnit objects.
      */
     public List<SensorUnit> getSensorUnits(List<Sensor> sensors) {
         List<SensorUnit> sList = new ArrayList<>();
         for (Sensor s : sensors) {
             if (this.sensors.contains(s)) {
                 SensorUnit unit = sensorMap.get(s.getType());
-                //set dummyData for testing:
-                //unit.setDummyData();
                 sList.add(unit);
             }
         }
