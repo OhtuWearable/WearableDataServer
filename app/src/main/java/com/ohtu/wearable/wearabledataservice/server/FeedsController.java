@@ -74,7 +74,7 @@ public class FeedsController {
     private NanoHTTPD.Response sensorDataResponseFromDb(int sensor){
         try {
             return new NanoHTTPD.Response(sensorsHandler.getAllSensorDataFromDb(sensor).toString());
-        } catch (Exception e) {
+        } catch (JSONException e) {
             return errorResponse(e.toString());
         }
     }

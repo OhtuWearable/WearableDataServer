@@ -167,5 +167,13 @@ public class SensorUnit implements SensorEventListener{
     public String getSensorName() {
         return this.sensor.getName();
     }
+
+    /**
+     * Helper method to get SensorUnit's Sensor object
+     * @return
+     */
+    public Sensor getSensor() {
+        return this.sensor;
+    }
 }
 

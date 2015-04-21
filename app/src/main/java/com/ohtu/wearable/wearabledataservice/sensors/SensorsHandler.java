@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.ohtu.wearable.wearabledataservice.SensorDatabaseHelper;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -91,8 +92,8 @@ public class SensorsHandler {
         this.sdbHelper = sdbHelper;
     }
 
-    public List<JSONObject> getAllSensorDataFromDb(int sensor) throws JSONException {
-        return sdbHelper.getAllSensorData(sensorMap.get(sensor).getSensorName());
+    public JSONArray getAllSensorDataFromDb(int sensor) throws JSONException {
+        return sdbHelper.getJSONArray(sensorMap.get(sensor).getSensor());
     }
 
     /**
