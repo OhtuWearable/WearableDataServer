@@ -42,7 +42,7 @@ public class SensorsHandler {
      */
     private Context context;
 
-    private SensorDatabaseHelper dbHelper;
+    private SensorDatabaseHelper sdbHelper;
 
     /**
      * Constructor for SensorsHandler
@@ -85,6 +85,14 @@ public class SensorsHandler {
             }
         }
         this.sensors = sensors;
+    }
+
+    public void setSdbHelper(SensorDatabaseHelper sdbHelper) {
+        this.sdbHelper = sdbHelper;
+    }
+
+    public List<JSONObject> getAllSensorDataFromDb(int sensor) throws JSONException {
+        return sdbHelper.getAllSensorData(sensorMap.get(sensor).getSensorName());
     }
 
     /**
