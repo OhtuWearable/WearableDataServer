@@ -154,4 +154,38 @@ public class SensorsHandler {
         return sensorManager.getSensorList(Sensor.TYPE_ALL);
     }
 
+    /**
+     * Returns all SensorUnits of selected sensors.
+     * @param sensors
+     * @return
+     */
+    public List<SensorUnit> getSensorUnits(List<Sensor> sensors) {
+        List<SensorUnit> sList = new ArrayList<>();
+        for (Sensor s : sensors) {
+            if (this.sensors.contains(s)) {
+                //Log.d("Adding sensor ", s.getName());
+                SensorUnit unit = sensorMap.get(s.getType());
+                //set dummyData for testing:
+                //unit.setDummyData();
+                sList.add(unit);
+            }
+        }
+        return sList;
+    }
+
+
+    /**
+     *
+     * @param sensorDatabase
+     * @param sensors
+     */
+    public SensorDatabase updateSensorUnitDatabase(SensorDatabase sensorDatabase, List<Sensor> sensors) {
+        for (Sensor s : sensors) {
+            if (!this.sensors.contains(s)) {
+                Log.d("Adding sensor ", s.getName());
+                sensorDatabase.addSensorUnit(sensorMap.get(s.getType()));
+            }
+        }
+       return sensorDatabase;
+    }
 }

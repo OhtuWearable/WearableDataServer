@@ -59,7 +59,10 @@ public class JSONConverter {
         return jsonObject;
     }
 
-    /** add SensorUnit data to database */
+    /** Add SensorUnit data to database
+     * Currently converts SensorUnits name as a string and double[] data as JSONObject to a
+     * JSONObject, which is saved to the database.
+     * */
     public static JSONObject convertToDatabaseJSON(SensorUnit unit) {
         try {
             JSONObject jEntry = new JSONObject();

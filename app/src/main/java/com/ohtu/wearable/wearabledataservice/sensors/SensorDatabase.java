@@ -17,9 +17,8 @@ import org.json.JSONObject;
 
 public class SensorDatabase extends SQLiteOpenHelper {
     public List<Sensor> sensors;
-    // Database Version
+
     private static final int DATABASE_VERSION = 1;
-    // Database Name
     private static final String DATABASE_NAME = "SensorDB";
     private static final String KEY_ID = "id";
     private static final String KEY_DATA = "data";
@@ -30,16 +29,14 @@ public class SensorDatabase extends SQLiteOpenHelper {
         this.sensors = sensors;
     }
 
-    //note: if database already exists, onCreate will not be called again!
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d("SensorDatabase", "********************************************************");
         createTables(db);
-        Log.d("SensorDatabase", "**************************** Database created");
+        Log.d("SensorDatabase", "*** Database created ***");
     }
 
     /**
-     * Create tables for all the sensors in the database.
+     * Create tables for all the sensors.
      */
     public void createTables(SQLiteDatabase db) {
         StringBuilder help;
@@ -51,7 +48,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, ");
             help.append(KEY_DATA + " TEXT NOT NULL);");
 
-            Log.d("SensorDatabase query" , help.toString());
+            //Log.d("SensorDatabase query" , help.toString());
 
             db.execSQL(help.toString());
         }
@@ -63,7 +60,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
      */
     public void addSensorUnit(SensorUnit unit){
         //for logging
-        Log.d("SensorDatabase", "adding sensor: " + unit.getSensorName());
+        //Log.d("SensorDatabase", "adding sensor: " + unit.getSensorName());
         // 1. get reference to writable DB
         SQLiteDatabase db = this.getWritableDatabase();
         // 2. create ContentValues to add key "column"/value
@@ -71,7 +68,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
         //get unit data values and convert them to JSON:
         JSONObject jEntry = JSONConverter.convertToDatabaseJSON(unit);
         //add jsonObject to database as a string:
-        Log.d("SensorDatabase", "JSON entry as a string: " + jEntry.toString());
+        //Log.d("SensorDatabase", "JSON entry as a string: " + jEntry.toString());
 
         values.put(KEY_DATA, jEntry.toString());
         //get table name:
@@ -88,69 +85,6 @@ public class SensorDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
-    /** Get JSONObject from a specific db entry
-     *
-     * @param sensorName sensor.getName()
-     * @param id id of the entry
-     * @return JSONObject of the item of wanted id
-     */
-
-    public JSONObject getJSONSensorData(String sensorName, int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String help = "\"" + sensorName + "\"";
-        Cursor cursor = db.query(help,
-                COLUMNS,
-                "id = ?",
-                new String[]{String.valueOf(id)},
-                null,
-                null,
-                null,
-                null);
-
-        if (cursor != null) {
-            cursor.moveToFirst();
-
-                try {
-                    String jsonString = cursor.getString(cursor.getColumnIndex("data"));
-                    JSONObject jsonObject = new JSONObject(jsonString);
-                    String name = (String) jsonObject.get("sensor");
-                    JSONObject data = (JSONObject) jsonObject.get("data");
-                    cursor.close();
-                    return data;
-                } catch(JSONException e) {
-
-            }
-            cursor.close();
-        }
-        return null;
-    }
-
-    /**
-     * Updates a single data entry for sensorUnit
-     * @param unit SensorUnit containing the sensor data
-     * @param id id of the entry
-     * @return int i
-     */
-
-    public int updateDataEntry(SensorUnit unit, int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String help = "\"" + unit.getSensorName()+ "\"";
-
-        ContentValues values = new ContentValues();
-        JSONObject jEntry = JSONConverter.convertToDatabaseJSON(unit);
-        values.put(KEY_DATA, jEntry.toString());
-
-        int i = db.update(help,
-                values,
-                KEY_ID+" = ?",
-                new String[]{String.valueOf(id)});
-        db.close();
-        return i;
-    }
-
-
     /**
      * Gets all the JSON data associated with the sensor.
      * Goes through all the entries in the database and collects data from each event to a list.
@@ -159,11 +93,11 @@ public class SensorDatabase extends SQLiteOpenHelper {
      * @throws JSONException
      */
     public List<JSONObject> getAllSensorData(String sensorName) throws JSONException {
-        Log.d("SensorDatabase","Getting all data");
+        //Log.d("SensorDatabase","Getting all data");
         List<JSONObject> objectList = new LinkedList<>();
 
         String query = "SELECT * FROM " + "\"" + sensorName+ "\"";
-        Log.d("SensorDatabase", "Get all items query: " + query);
+        //Log.d("SensorDatabase", "Get all items query: " + query);
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
@@ -188,7 +122,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
      * Deletes all entries of all tables in the database.
      */
     public void deleteEntries() {
-        Log.d("SensorDatabase", "Dropping all tables");
+        //Log.d("SensorDatabase", "Deleting all entries");
         SQLiteDatabase db = this.getWritableDatabase();
         for (int i = 0; i < sensors.size(); i++) {
             db.delete("\"" + sensors.get(i).getName() + "\"", null, null);

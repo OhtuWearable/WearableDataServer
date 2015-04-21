@@ -32,6 +32,7 @@ public class SensorServerService extends Service {
     private boolean serviceStarted = false;
     private SensorHTTPServer server;
     private SensorsHandler sensorsHandler;
+    SensorDatabase sensorDatabase;
     SQLiteDatabase db;
 
     // Binder given to clients
@@ -81,21 +82,45 @@ public class SensorServerService extends Service {
 
 
     /**
-     * start the HTTP server if it's not running,
-     * otherwise updates used sensors
+     * Start the HTTP server and database if it's not running,
+     * Otherwise updates used sensors and database entries.
      */
     public void startServer(List<Sensor> sensors){
         if (db == null && sensors != null) {
-            SensorDatabase helper = new SensorDatabase(this, sensorsHandler.getAllSensorsOnDevice());
-            db = helper.getWritableDatabase();
-            //db.isOpen();
+            sensorDatabase = new SensorDatabase(this, sensorsHandler.getAllSensorsOnDevice());
+            sensorDatabase.deleteEntries();
+            db = sensorDatabase.getWritableDatabase();
             Log.w("DB", "started");
-            testDummyData(helper);
+            testDummyData(sensorDatabase);
         }
 
         if (serverStarted && serverRunning){
-            if (sensors != null) sensorsHandler.initSensors(sensors);
+            if (sensors != null) {
+                sensorsHandler.initSensors(sensors);
 
+                //Add selected sensor items to database:
+                if (sensorDatabase != null) {
+                    //on list update, add all sensor units to database:
+                    List<SensorUnit> units = sensorsHandler.getSensorUnits(sensors);
+                    String s = "";
+                    for (SensorUnit unit : units) {
+                        //Log.d("Adding sensor items", "* * * "  + unit.getSensorName());
+                        s = unit.getSensorName();
+                        sensorDatabase.addSensorUnit(unit);
+                    }
+                    /*
+                    try {
+                        if (s != "") {
+                            Log.d("Sensor name", s);
+                            Log.d("ADDED DATA: ", sensorDatabase.getAllSensorData(s).toString());
+                        }
+                    } catch (JSONException e) {
+
+                    }
+                    */
+                    //testDummyData(sensorDatabase);
+                }
+            }
             Log.w("SERVER", "sensors updated");
         } else if (serverStarted && !serverRunning) {
             tryToStartServer();
@@ -112,19 +137,20 @@ public class SensorServerService extends Service {
     private void testDummyData(SensorDatabase helper) {
         //TODO: remove dummy data testing
         //---- dummy data for testing the database, remove
+
         List<Sensor> sensorList = sensorsHandler.getAllSensorsOnDevice();
         SensorUnit unit = new SensorUnit();
         unit.setSensor(sensorList.get(2), this);
         unit.setDummyData();
-        helper.addSensorUnit(unit);
+        //helper.addSensorUnit(unit);
         try {
-            helper.addSensorUnit(unit);
+            //helper.addSensorUnit(unit);
             List<JSONObject>  a = helper.getAllSensorData(unit.getSensorName());
             //Log.d("getJSONSensorData: ", helper.getJSONSensorData(unit.getSensorName(), 0).toString());
             Log.d("JSONOBJECTS AS A LIST: ", a.toString());
-            helper.emptySensorTable(unit.getSensorName());
-            List<JSONObject>  b = helper.getAllSensorData(unit.getSensorName());
-            Log.d("JSONOBJECTS AS A LIST: ", b.toString());
+            //helper.emptySensorTable(unit.getSensorName());
+            //List<JSONObject>  b = helper.getAllSensorData(unit.getSensorName());
+            //Log.d("JSONOBJECTS AS A LIST: ", b.toString());
 
             //helper.createTables();
                 /*
@@ -147,7 +173,6 @@ public class SensorServerService extends Service {
         } catch (JSONException e) {
 
         }
-        //---
     }
 
     /**
@@ -170,12 +195,13 @@ public class SensorServerService extends Service {
         return serverRunning;
     }
 
+    /** If service is destroyed, stop server and empty and close the database */
     @Override
     public void onDestroy (){
-        //if service is destroyed stop server and close database
-        db.close();
         sensorsHandler.stopSensors();
         server.stop();
+        sensorDatabase.deleteEntries();
+        db.close();
     }
 
     private void tryToStartServer(){
