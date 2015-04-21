@@ -83,42 +83,31 @@ public class SensorServerService extends Service {
 
     /**
      * Start the HTTP server and database if it's not running,
-     * Otherwise updates used sensors and database entries.
+     * Otherwise updates selected sensors and database entries for them.
      */
     public void startServer(List<Sensor> sensors){
         if (db == null && sensors != null) {
             sensorDatabase = new SensorDatabase(this, sensorsHandler.getAllSensorsOnDevice());
-            sensorDatabase.deleteEntries();
+            //drop old tables and create new ones:
+            sensorDatabase.restart();
+
+            //not-so-hard reset:
+            //sensorDatabase.deleteEntries();
             db = sensorDatabase.getWritableDatabase();
             Log.w("DB", "started");
-            testDummyData(sensorDatabase);
         }
 
         if (serverStarted && serverRunning){
             if (sensors != null) {
                 sensorsHandler.initSensors(sensors);
-
                 //Saves all data from selected sensors to database every time the list is updated:
                 if (sensorDatabase != null) {
-                    //on list update, add all sensor units to database:
                     List<SensorUnit> units = sensorsHandler.getSensorUnits(sensors);
                     String s = "";
                     for (SensorUnit unit : units) {
-                        //Log.d("Adding sensor items", "* * * "  + unit.getSensorName());
                         s = unit.getSensorName();
                         sensorDatabase.addSensorUnit(unit);
                     }
-                    /*
-                    try {
-                        if (s != "") {
-                            Log.d("Sensor name", s);
-                            Log.d("ADDED DATA: ", sensorDatabase.getAllSensorData(s).toString());
-                        }
-                    } catch (JSONException e) {
-
-                    }
-                    */
-                    //testDummyData(sensorDatabase);
                 }
             }
             Log.w("SERVER", "sensors updated");
@@ -130,48 +119,6 @@ public class SensorServerService extends Service {
             server = new SensorHTTPServer(feedsController);
 
             tryToStartServer();
-        }
-    }
-
-    //test database with dummy data:
-    private void testDummyData(SensorDatabase helper) {
-        //TODO: remove dummy data testing
-        //---- dummy data for testing the database, remove
-
-        List<Sensor> sensorList = sensorsHandler.getAllSensorsOnDevice();
-        SensorUnit unit = new SensorUnit();
-        unit.setSensor(sensorList.get(2), this);
-        unit.setDummyData();
-        //helper.addSensorUnit(unit);
-        try {
-            //helper.addSensorUnit(unit);
-            List<JSONObject>  a = helper.getAllSensorData(unit.getSensorName());
-            //Log.d("getJSONSensorData: ", helper.getJSONSensorData(unit.getSensorName(), 0).toString());
-            Log.d("JSONOBJECTS AS A LIST: ", a.toString());
-            //helper.emptySensorTable(unit.getSensorName());
-            //List<JSONObject>  b = helper.getAllSensorData(unit.getSensorName());
-            //Log.d("JSONOBJECTS AS A LIST: ", b.toString());
-
-            //helper.createTables();
-                /*
-                List<JSONObject>  b = helper.getAllSensorData(unit.getSensorName());
-                Log.d("JSONOBJECTS AS A LIST: ", b.toString());
-                unit.setDummyData2();
-                Log.d("asdf" , unit.getSensorData().toString());
-                helper.updateDataEntry(unit, 0);
-                a = helper.getAllSensorData(unit.getSensorName());
-                Log.d("JSONOBJECTS AS A LIST: ", a.toString());
-
-                /*
-                helper.addSensorUnit(unit);
-                a = helper.getAllSensorData(unit.getSensorName());
-                Log.d("JSONOBJECTS AS A LIST: ", a.toString());
-                helper.deleteEntries();
-                a = helper.getAllSensorData(unit.getSensorName());
-                Log.d("JSONOBJECTS AS A LIST: ", a.toString());
-                */
-        } catch (JSONException e) {
-
         }
     }
 
@@ -217,8 +164,5 @@ public class SensorServerService extends Service {
             Toast.makeText(this, "Server failed to start", Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
 
 }
