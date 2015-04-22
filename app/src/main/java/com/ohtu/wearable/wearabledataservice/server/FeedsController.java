@@ -1,8 +1,12 @@
 package com.ohtu.wearable.wearabledataservice.server;
 
+import android.util.Log;
+
 import com.ohtu.wearable.wearabledataservice.sensors.SensorsHandler;
 
 import org.json.JSONException;
+
+import java.util.regex.Pattern;
 
 /**
  * Returns device sensors data as JSON in NanoHTTPD.Response based on uri
@@ -10,6 +14,11 @@ import org.json.JSONException;
 public class FeedsController {
 
     private SensorsHandler sensorsHandler;
+
+    //regex matchers for routing by uri
+    private static String LIST = "\\/?";
+    private static String SENSOR_DATA = "\\/\\d*";
+    private static String SENSOR_DB = "\\/\\d*\\/";
 
     public FeedsController(SensorsHandler sensorsHandler){
 
@@ -28,19 +37,53 @@ public class FeedsController {
      */
     public NanoHTTPD.Response getResponse(String uri, String method) {
 
-        int sensor = -1;
+        int sensor;
+
+        if (uri.matches(LIST) && method.equals("GET")){
+            Log.d("FeedsController", "Matches LIST");
+            return listResponse();
+        } else if (uri.matches(SENSOR_DATA) && method.equals("GET")){
+            Log.d("FeedsController", "Matches SENSOR_DATA");
+            try {
+                sensor = Integer.parseInt(uri.substring(1));
+                Log.d("FeedsController", "" + sensor);
+                if (sensorsHandler.sensorIsActive(sensor)){
+                    return sensorDataResponse(sensor);
+                }
+                return notFoundResponse();
+            } catch (NumberFormatException e){
+                return notFoundResponse();
+            }
+        } else if (uri.matches(SENSOR_DB) && method.equals("GET")){
+            Log.d("FeedsController", "Matches SENSOR_DB");
+            try {
+                Log.d("FeedsController", "parsed uri " + uri.substring(1, uri.length() - 1));
+                sensor = Integer.parseInt(uri.substring(1, uri.length() - 1));
+                Log.d("FeedsController", "" + sensor);
+                return sensorDataResponseFromDb(sensor);
+            } catch (NumberFormatException e){
+                return notFoundResponse();
+            }
+        } else {
+            Log.d("FeedsController", "no match");
+            return notFoundResponse();
+        }
 
         //try to parse sensor number from feeds/[sensor] if not integer catch exception
+        /*
         if (uri.length() > 1){
             try {
                 sensor = Integer.parseInt(uri.substring(1));
             } catch (NumberFormatException e){
             }
-        }
+        }*/
+
+
 
         //if uri is / or empty return list of sensor
         //else if list of sensors contain sensor number parsed from uri return sensor data
         //otherwise return not found
+        /*
         if ((uri.equalsIgnoreCase("/") || uri.isEmpty()) && method.equals("GET")) {
             return listResponse();
         } else if ( sensorsHandler.sensorIsActive(sensor) && uri.equalsIgnoreCase("/" + sensor) && method.equals("GET")){
@@ -51,7 +94,7 @@ public class FeedsController {
             return sensorDataResponseFromDb(sensor);
         } else {
             return notFoundResponse();
-        }
+        }*/
 
     }
 

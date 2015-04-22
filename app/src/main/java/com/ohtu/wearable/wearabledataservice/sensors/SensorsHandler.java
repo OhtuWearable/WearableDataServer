@@ -167,6 +167,10 @@ public class SensorsHandler {
         return sensorManager.getSensorList(Sensor.TYPE_ALL);
     }
 
+    /*public boolean sensorExists(int sensorId){
+        return sensorMap.containsKey(sensorId);
+    }*/
+
     /**
      * Returns SensorUnits of selected sensors.
      * @param sensors List of selected Sensors
