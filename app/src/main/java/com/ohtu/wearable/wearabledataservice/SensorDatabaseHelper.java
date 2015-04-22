@@ -12,8 +12,6 @@ import com.ohtu.wearable.wearabledataservice.sensors.SensorsHandler;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -55,8 +53,20 @@ public class SensorDatabaseHelper {
         if (sensorDatabase != null) {
             List<SensorUnit> units = sensorsHandler.getSensorUnits(sensors);
             for (SensorUnit unit : units) {
+                //unit.setDummyData();
                 sensorDatabase.addSensorUnit(unit);
             }
+        }
+    }
+
+    /**
+     * Enters data from single SensorUnit to database.
+     * @param unit SensorUnit to be added.
+     */
+    public void insertSensor(SensorUnit unit) {
+        if (sensorDatabase != null && unit != null) {
+            Log.d("Insertsensor", "");
+            sensorDatabase.addSensorUnit(unit);
         }
     }
 
@@ -82,12 +92,19 @@ public class SensorDatabaseHelper {
 
     /**
      * Return all sensor data as JSONArray
-     * @param sensor Sensor
+     * @param sensorName Sensor name
      * @return JSONArray
      * @throws JSONException
      */
-    public JSONArray getJSONArray(Sensor sensor) throws JSONException {
-        List<JSONObject> data = sensorDatabase.getAllSensorData(sensor.getName());
+    public JSONArray getJSONArray(String sensorName) throws JSONException {
+        if (sensorName == null) {
+            return null;
+        }
+
+        Log.d("getJSONArray", sensorName);
+        List<JSONObject> data = sensorDatabase.getAllSensorData(sensorName);
+        Log.d("JSONDATA", data.toString());
+
         JSONArray jsonArray = new JSONArray();
         for (JSONObject o : data) {
            jsonArray.put(o);

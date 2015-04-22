@@ -91,9 +91,6 @@ public class SensorServerService extends Service {
                 sensorsHandler.initSensors(sensors);
 
                 //Saves all data from selected sensors to database every time the list is updated:
-                if (dbHelper != null) {
-                    dbHelper.insertSensorData(sensors);
-                }
 
             }
             Log.w("SERVER", "sensors updated");

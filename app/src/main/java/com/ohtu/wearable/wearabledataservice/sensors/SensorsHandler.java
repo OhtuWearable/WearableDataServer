@@ -64,6 +64,7 @@ public class SensorsHandler {
             if (!sensorMap.containsKey(s.getType())) {
                 sensorMap.put(s.getType(), new SensorUnit());
                 sensorMap.get(s.getType()).setSensor(s, this.context);
+                sensorMap.get(s.getType()).setHelper(this.sdbHelper);
             }
         }
         //initSensors(this.sensors);
@@ -88,12 +89,29 @@ public class SensorsHandler {
         this.sensors = sensors;
     }
 
+    /**
+     * Sets SensorDatabaseHelper for this class and all SensorUnits
+     * @param sdbHelper SensorDatabaseHelper to be set.
+     */
     public void setSdbHelper(SensorDatabaseHelper sdbHelper) {
         this.sdbHelper = sdbHelper;
+
+        for (Sensor s : getAllSensorsOnDevice()) {
+            if (sensorMap.containsKey(s.getType())) {
+                sensorMap.get(s.getType()).setHelper(this.sdbHelper);
+            }
+        }
+
     }
 
+    /**
+     * Get JSONArray of all the sensor data from database
+     * @param sensor Id of sensor
+     * @return JSONArray
+     * @throws JSONException
+     */
     public JSONArray getAllSensorDataFromDb(int sensor) throws JSONException {
-        return sdbHelper.getJSONArray(sensorMap.get(sensor).getSensor());
+        return sdbHelper.getJSONArray(sensorMap.get(sensor).getSensor().getName());
     }
 
     /**
@@ -185,5 +203,6 @@ public class SensorsHandler {
             }
         }
         return sList;
+
     }
 }

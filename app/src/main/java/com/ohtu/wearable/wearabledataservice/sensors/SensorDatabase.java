@@ -91,6 +91,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
         JSONObject data = null;
         if (cursor.moveToFirst()) {
+            Log.d("SensorDatabase", "cursor found");
             do {
                 data = new JSONObject();
 
@@ -98,6 +99,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
                 JSONObject jsonObject = new JSONObject(jsonString);
                 data = (JSONObject) jsonObject.get("data");
                 objectList.add(data);
+                Log.d("JSONDATA1: ", data.toString());
 
             } while (cursor.moveToNext());
         }

@@ -8,6 +8,8 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.util.Log;
 
+import com.ohtu.wearable.wearabledataservice.SensorDatabaseHelper;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,6 +58,15 @@ public class SensorUnit implements SensorEventListener{
      */
     private int listenTime;
 
+    private SensorDatabaseHelper dbHelper;
+    /**
+     * Number telling when last entry to database was saved
+     */
+    private long lastSaved;
+    /**
+     * Length of time how often sensor data is saved to database
+     */
+    static private long saveInterval = 1000;
 
     /**
      * Registers listener to a sensor and also sets context for it
@@ -64,6 +75,7 @@ public class SensorUnit implements SensorEventListener{
      */
     public void setSensor(Sensor sensor, Context mContext){
         handler = new Handler();
+        lastSaved = System.currentTimeMillis();
         this.sensorId = sensor.getType();
         this.sensor = sensor;
         mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
@@ -121,7 +133,17 @@ public class SensorUnit implements SensorEventListener{
         for (int i = 0; i<event.values.length;i++) {
             data[i] = event.values[i];
         }
-        data[event.values.length] = System.currentTimeMillis();
+        long timenow = System.currentTimeMillis();
+        data[event.values.length] = timenow;
+
+        /** Save changed sensor data to database: */
+        if (dbHelper != null) {
+            if (timenow - lastSaved > saveInterval) {
+                Log.d("data saved", "");
+                dbHelper.insertSensor(this);
+                lastSaved = timenow;
+            }
+        }
 
         /*if (event.sensor.getType() == 1) {
             Log.d("kuuntelija", "voi ei!" + randomi);
@@ -174,6 +196,25 @@ public class SensorUnit implements SensorEventListener{
      */
     public Sensor getSensor() {
         return this.sensor;
+    }
+
+    /**
+     * Sets dummy data for testing purposes.
+     */
+    public void setDummyData() {
+        data = new double[4];
+        for (int i = 0; i < 3; i++) {
+            data[i] = i;
+        }
+        data[3] = System.currentTimeMillis();
+    }
+
+    /**
+     * Sets SensorDatabaseHelper for this class
+     * @param helper SensorDatabaseHelper to be set
+     */
+    public void setHelper(SensorDatabaseHelper helper) {
+        this.dbHelper = helper;
     }
 }
 
