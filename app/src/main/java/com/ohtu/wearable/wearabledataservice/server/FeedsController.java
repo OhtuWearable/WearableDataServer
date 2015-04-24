@@ -64,37 +64,11 @@ public class FeedsController {
             } catch (NumberFormatException e){
                 return notFoundResponse();
             }
+        } else if (method.equals("POST") || method.equals("PUT") || method.equals("DELETE")) {
+            return notImplementedResponse();
         } else {
-            Log.d("FeedsController", "no match");
             return notFoundResponse();
         }
-
-        //try to parse sensor number from feeds/[sensor] if not integer catch exception
-        /*
-        if (uri.length() > 1){
-            try {
-                sensor = Integer.parseInt(uri.substring(1));
-            } catch (NumberFormatException e){
-            }
-        }*/
-
-
-
-        //if uri is / or empty return list of sensor
-        //else if list of sensors contain sensor number parsed from uri return sensor data
-        //otherwise return not found
-        /*
-        if ((uri.equalsIgnoreCase("/") || uri.isEmpty()) && method.equals("GET")) {
-            return listResponse();
-        } else if ( sensorsHandler.sensorIsActive(sensor) && uri.equalsIgnoreCase("/" + sensor) && method.equals("GET")){
-            return sensorDataResponse(sensor);
-        } else if (method.equals("POST")) {
-            return new NanoHTTPD.Response(NanoHTTPD.Response.Status.METHOD_NOT_ALLOWED, NanoHTTPD.MIME_PLAINTEXT, "Not implemented");
-        } else if ( sensorsHandler.sensorIsActive(sensor) && uri.equalsIgnoreCase("/" + sensor + "/")) {
-            return sensorDataResponseFromDb(sensor);
-        } else {
-            return notFoundResponse();
-        }*/
 
     }
 
@@ -129,6 +103,10 @@ public class FeedsController {
 
     private NanoHTTPD.Response errorResponse(String error){
         return new NanoHTTPD.Response(NanoHTTPD.Response.Status.INTERNAL_ERROR, NanoHTTPD.MIME_PLAINTEXT, error);
+    }
+
+    private NanoHTTPD.Response notImplementedResponse(){
+        return new NanoHTTPD.Response(NanoHTTPD.Response.Status.METHOD_NOT_ALLOWED, NanoHTTPD.MIME_PLAINTEXT, "Not Implemented");
     }
 
 }
