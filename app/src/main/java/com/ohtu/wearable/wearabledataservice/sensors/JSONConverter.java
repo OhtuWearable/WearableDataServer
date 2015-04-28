@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by jannetim on 10/02/15.
+ * Class that converts native sensor value from java array format to JSON-format
  */
 public class JSONConverter {
 
