@@ -35,9 +35,6 @@ public class SensorUnit implements SensorEventListener{
      * Float array to store latest sensor values
      */
     private double[] data;
-
-    //private int randomi = new Random().nextInt();
-
     /**
      * Android's Handler for handling and running runnables after some specific time
      */
@@ -141,10 +138,6 @@ public class SensorUnit implements SensorEventListener{
                 lastSaved = timenow;
             }
         }
-
-        /*if (event.sensor.getType() == 1) {
-            Log.d("kuuntelija", "voi ei!" + randomi);
-        }*/
     }
 
     /**
