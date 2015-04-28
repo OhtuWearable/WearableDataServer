@@ -8,3 +8,5 @@ WearableDataServer includes GUI where user may select sensor(s) to be listened f
 
 Copyright 2015 University of Helsinki
 Licensed under the Apache License, Version 2.0
+
+<a href="https://github.com/NanoHttpd/nanohttpd/blob/master/LICENSE.md">NanoHttpd license:</a> Copyright (c) 2012-2013 by Paul S. Hawke, 2001,2005-2013 by Jarno Elonen, 2010 by Konstantinos Togias All rights reserved.
