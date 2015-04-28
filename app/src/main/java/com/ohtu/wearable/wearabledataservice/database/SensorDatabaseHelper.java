@@ -5,10 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.hardware.Sensor;
 import android.util.Log;
 
-import com.ohtu.wearable.wearabledataservice.database.SensorDatabase;
 import com.ohtu.wearable.wearabledataservice.sensors.SensorUnit;
 import com.ohtu.wearable.wearabledataservice.sensors.SensorsHandler;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,9 +16,13 @@ import java.util.List;
  * Helper class to create database and access the data in it. Currently drops all previous data when the servers start.
  */
 public class SensorDatabaseHelper {
+    /** SensorHandler */
     private SensorsHandler sensorsHandler;
+    /** SensorDatabase that is being accessed */
     private SensorDatabase sensorDatabase;
+    /** SQLiteDatabase which is a writable database from SensorDatabase */
     private SQLiteDatabase db;
+    /** List of all the sensors on the device */
     private List<Sensor> sensors;
 
     public SensorDatabaseHelper(SensorsHandler handler) {

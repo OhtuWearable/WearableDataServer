@@ -12,10 +12,8 @@ import java.lang.StringBuilder;
 import java.util.LinkedList;
 import java.util.List;
 import android.util.Log;
-
 import com.ohtu.wearable.wearabledataservice.sensors.JSONConverter;
 import com.ohtu.wearable.wearabledataservice.sensors.SensorUnit;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,12 +21,17 @@ import org.json.JSONObject;
  * Database for all the sensor data. Storages the name of the SensorUnit and it's values as JSONObjects.
  */
 public class SensorDatabase extends SQLiteOpenHelper {
+    /** List of sensors on device */
     public List<Sensor> sensors;
-
+    /** Version of the database */
     private static final int DATABASE_VERSION = 1;
+    /** Name of the database */
     private static final String DATABASE_NAME = "SensorDB";
+    /** Name of the id column */
     private static final String KEY_ID = "id";
+    /** Name of the data column */
     private static final String KEY_DATA = "data";
+    /** String containing the columns in the database */
     private static final String[] COLUMNS = {KEY_ID, KEY_DATA};
 
     public SensorDatabase(Context context, List<Sensor> sensors) {
