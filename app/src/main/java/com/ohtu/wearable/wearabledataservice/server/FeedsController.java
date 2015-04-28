@@ -6,10 +6,9 @@ import com.ohtu.wearable.wearabledataservice.sensors.SensorsHandler;
 
 import org.json.JSONException;
 
-import java.util.regex.Pattern;
 
 /**
- * Returns device sensors data as JSON in NanoHTTPD.Response based on uri
+ * Returns device sensors data in NanoHTTPD.Response based on uri
  */
 public class FeedsController {
 
@@ -33,7 +32,7 @@ public class FeedsController {
      *
      * @param uri, URI
      * @param method, HTTP method
-     * @return
+     * @return NanoHTTPD.Response
      */
     public NanoHTTPD.Response getResponse(String uri, String method) {
 
@@ -72,14 +71,20 @@ public class FeedsController {
 
     }
 
+    /**
+     * Returns NanoHTTPD.Response containing JSON formatted list of enabled sensors
+     */
     private NanoHTTPD.Response listResponse(){
         try {
             return new NanoHTTPD.Response(sensorsHandler.getSensorsList().toString());
         } catch (JSONException e) {
-            return new NanoHTTPD.Response(NanoHTTPD.Response.Status.INTERNAL_ERROR, NanoHTTPD.MIME_PLAINTEXT, "Error");
+            return errorResponse(e.toString());
         }
     }
 
+    /**
+     * Returns NanoHTTPD.Response containing JSON formatted string of sensor data
+     */
     private NanoHTTPD.Response sensorDataResponse(int sensor){
         try {
             return new NanoHTTPD.Response(sensorsHandler.getSensorData(sensor).toString());
@@ -88,6 +93,9 @@ public class FeedsController {
         }
     }
 
+    /**
+     * Returns NanoHTTPD.Response containing JSON formatted list of sensor data from DB
+     */
     private NanoHTTPD.Response sensorDataResponseFromDb(int sensor){
         try {
             return new NanoHTTPD.Response(sensorsHandler.getAllSensorDataFromDb(sensor).toString());
@@ -96,7 +104,6 @@ public class FeedsController {
         }
     }
 
-    //Returns NOT FOUND HTTP response
     private NanoHTTPD.Response notFoundResponse(){
         return new NanoHTTPD.Response(NanoHTTPD.Response.Status.NOT_FOUND, NanoHTTPD.MIME_PLAINTEXT, "Not Found");
     }
