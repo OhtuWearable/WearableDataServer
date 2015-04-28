@@ -38,9 +38,6 @@ public class SensorUnit implements SensorEventListener{
      * Float array to store latest sensor values
      */
     private double[] data;
-
-    //private int randomi = new Random().nextInt();
-
     /**
      * Android's Handler for handling and running runnables after some specific time
      */
