@@ -138,10 +138,6 @@ public class SensorUnit implements SensorEventListener{
                 lastSaved = timenow;
             }
         }
-
-        /*if (event.sensor.getType() == 1) {
-            Log.d("kuuntelija", "voi ei!" + randomi);
-        }*/
     }
 
     /**
