@@ -3,7 +3,6 @@ package com.ohtu.wearable.wearabledataservice;
 import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.hardware.Sensor;
 import android.os.Binder;
 import android.os.IBinder;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 import com.ohtu.wearable.wearabledataservice.database.SensorDatabaseHelper;
 import com.ohtu.wearable.wearabledataservice.sensors.SensorsHandler;
 import com.ohtu.wearable.wearabledataservice.server.FeedsController;
-import com.ohtu.wearable.wearabledataservice.database.SensorDatabase;
 import com.ohtu.wearable.wearabledataservice.server.SensorHTTPServer;
 
 import java.io.IOException;
@@ -23,15 +21,22 @@ import java.util.List;
  * Run SensorHTTPServer as a bound foreground service
  */
 public class SensorServerService extends Service {
-
+    /**
+     * is server started
+     */
     private boolean serverStarted = false;
+    /**
+     * is server running
+     */
     private boolean serverRunning = false;
+    /**
+     * is this service started
+     */
     private boolean serviceStarted = false;
+
     private SensorHTTPServer server;
     private SensorsHandler sensorsHandler;
     private SensorDatabaseHelper dbHelper;
-    SensorDatabase sensorDatabase;
-    SQLiteDatabase db;
 
     // Binder given to clients
     private final IBinder mBinder = new LocalBinder();
@@ -52,7 +57,14 @@ public class SensorServerService extends Service {
         return mBinder;
     }
 
-
+    /**
+     * Starts this service as Foregrounnd service if service isn't already started
+     *
+     * @param intent
+     * @param flags
+     * @param startId
+     * @return START_STICKY
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -126,7 +138,9 @@ public class SensorServerService extends Service {
         return serverRunning;
     }
 
-    /** If service is destroyed, stop server */
+    /**
+     * If service is destroyed, stop server
+     */
     @Override
     public void onDestroy (){
         sensorsHandler.stopSensors();
@@ -134,6 +148,9 @@ public class SensorServerService extends Service {
         dbHelper.close();
     }
 
+    /**
+     * Tries to start server, shows notification if server fails to start
+     */
     private void tryToStartServer(){
         try {
             server.start();

@@ -1,7 +1,7 @@
 package com.ohtu.wearable.wearabledataservice;
 
 /**
- * Created by sjsaarin on 16.3.2015.
+ * Interface used to call MainActivity's server control methods from UI classes
  */
 public interface ServerControlInterface {
     public void startServer();

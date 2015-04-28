@@ -9,6 +9,11 @@ import android.util.Log;
 
     private FeedsController feedsController;
 
+    /**
+     * Sets port to listen to 8080
+     *
+     * @param feedsController
+     */
     public SensorHTTPServer(FeedsController feedsController)
     {
         super(8080);
