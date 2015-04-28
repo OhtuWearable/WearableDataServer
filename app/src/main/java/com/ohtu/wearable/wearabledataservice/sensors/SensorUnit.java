@@ -15,7 +15,7 @@ import org.json.JSONObject;
 
 
 /**
- * Created by jannetim on 12/02/15.
+ * Class to control, listen and collect data from a sensor that has been assigned to it.
  */
 public class SensorUnit implements SensorEventListener{
 

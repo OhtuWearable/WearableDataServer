@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by jannetim on 12/02/15.
  * Class for handling multiple sensors
  */
 public class SensorsHandler {
