@@ -10,9 +10,10 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.ohtu.wearable.wearabledataservice.database.SensorDatabaseHelper;
 import com.ohtu.wearable.wearabledataservice.sensors.SensorsHandler;
 import com.ohtu.wearable.wearabledataservice.server.FeedsController;
-import com.ohtu.wearable.wearabledataservice.sensors.SensorDatabase;
+import com.ohtu.wearable.wearabledataservice.database.SensorDatabase;
 import com.ohtu.wearable.wearabledataservice.server.SensorHTTPServer;
 
 import java.io.IOException;
