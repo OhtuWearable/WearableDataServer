@@ -19,6 +19,10 @@ import java.util.List;
 public class StartServerActivity extends Activity
 {
     private SensorServerService sensorServerService = null;
+
+    /**
+     * is sensorServerService bound
+     */
     private boolean serviceBound = false;
 
     /**
@@ -59,7 +63,7 @@ public class StartServerActivity extends Activity
         unbindService(mConnection);
     }
 
-    //called when service is bound to this activity
+    //called when service is bound/unbound to this activity
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
