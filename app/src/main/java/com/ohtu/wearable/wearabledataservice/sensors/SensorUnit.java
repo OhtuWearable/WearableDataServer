@@ -31,7 +31,7 @@ public class SensorUnit implements SensorEventListener{
      */
     private Sensor sensor;
     /**
-     * Lol Ys dis heer, dunno :--) maybe there's gonna be some use eh?
+     *  Sensor's id number stored. Currently not accessed after assigning.
      */
     private int sensorId;
     /**

@@ -55,7 +55,7 @@ public class SensorUnitTest {
         assertThat(shadowSensorUnit.listenSensor(), is(true));
     }
 
-@Test
+    @Test
     public void sensorListenerIsFirstRegisteredAndThenUnregistered() {
         shadowSensorUnit.setSensor(shadow.getDefaultSensor(1), RuntimeEnvironment.application.getBaseContext());
         assertThat(shadowSensorUnit.listenSensor(), is(true));
