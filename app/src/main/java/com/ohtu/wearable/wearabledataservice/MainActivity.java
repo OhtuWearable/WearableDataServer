@@ -22,11 +22,21 @@ public class MainActivity extends FragmentActivity implements SelectedSensorsInt
 
     List<Sensor> sensors;
 
+    /**
+     * Sets enabled sensors
+     *
+     * @param sensors List of sensor objects
+     */
     public void setSelectedSensors(List<Sensor> sensors){
         this.sensors = sensors;
         setServerSensors(sensors);
     }
 
+    /**
+     * Returns list of enabled sensors
+     *
+     * @return List of sensor objects
+     */
     public List<Sensor> getSelectedSensors(){
         return this.sensors;
     }
@@ -44,18 +54,14 @@ public class MainActivity extends FragmentActivity implements SelectedSensorsInt
         startServerService();
     }
 
-    /**
-     * Starts server as a foreground service.
-     */
+    //Starts server as a foreground service.
     private void startServerService() {
         Intent startIntent = new Intent(this, SensorServerService.class);
         startIntent.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
         startService(startIntent);
     }
 
-    /**
-     * Called when this activity is started or resumed.
-     */
+    //Called when this activity is started or resumed.
     @Override
     protected void onResume() {
         super.onResume();
@@ -67,18 +73,14 @@ public class MainActivity extends FragmentActivity implements SelectedSensorsInt
         }*/
     }
 
-    /**
-     * Called when activity is paused.
-     */
+    //Called when activity is paused.
     @Override
     protected void onPause() {
         super.onPause();
         unbindService(mConnection);
     }
 
-    /**
-     * Called when service is bound to this acitivy.
-     */
+    //Called when service is bound to this acitivity
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -126,6 +128,11 @@ public class MainActivity extends FragmentActivity implements SelectedSensorsInt
         }
     }
 
+    /**
+     * Tells if server is running
+     *
+     * @return true if service is running
+     */
     @Override
     public boolean isRunning(){
         if (serviceBound){
