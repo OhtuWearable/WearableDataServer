@@ -1,4 +1,4 @@
-package com.ohtu.wearable.wearabledataservice.sensors;
+package com.ohtu.wearable.wearabledataservice.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,9 +12,16 @@ import java.lang.StringBuilder;
 import java.util.LinkedList;
 import java.util.List;
 import android.util.Log;
+
+import com.ohtu.wearable.wearabledataservice.sensors.JSONConverter;
+import com.ohtu.wearable.wearabledataservice.sensors.SensorUnit;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Database for all the sensor data. Storages the name of the SensorUnit and it's values as JSONObjects.
+ */
 public class SensorDatabase extends SQLiteOpenHelper {
     public List<Sensor> sensors;
 
@@ -57,19 +64,11 @@ public class SensorDatabase extends SQLiteOpenHelper {
      */
     public void addSensorUnit(SensorUnit unit){
         SQLiteDatabase db = this.getWritableDatabase();
-        // Create ContentValues to add key "column"/value
         ContentValues values = new ContentValues();
-        // Get unit data values and convert them to JSON:
         JSONObject jEntry = JSONConverter.convertToDatabaseJSON(unit);
-        //Add JSONObject to database as a string:
-        //Log.d("SensorDatabase", "JSON entry as a string: " + jEntry.toString());
-
         values.put(KEY_DATA, jEntry.toString());
         String tableName = "\"" + unit.getSensorName()+ "\"";
-
         Log.d("SensorDatabase", "addSensorEvent query: " + tableName);
-
-        //Insert into database:
         db.insert(tableName,
                 null,
                 values);
@@ -84,7 +83,6 @@ public class SensorDatabase extends SQLiteOpenHelper {
      * @throws JSONException
      */
     public List<JSONObject> getAllSensorData(String sensorName) throws JSONException {
-        Log.d("SensorDatabase","Getting all data");
         List<JSONObject> objectList = new LinkedList<>();
         String query = "SELECT * FROM " + "\"" + sensorName+ "\"";
         SQLiteDatabase db = this.getWritableDatabase();
@@ -94,12 +92,10 @@ public class SensorDatabase extends SQLiteOpenHelper {
             Log.d("SensorDatabase", "cursor found");
             do {
                 data = new JSONObject();
-
                 String jsonString = cursor.getString(cursor.getColumnIndex("data"));
                 JSONObject jsonObject = new JSONObject(jsonString);
                 data = (JSONObject) jsonObject.get("data");
                 objectList.add(data);
-                Log.d("JSONDATA1: ", data.toString());
 
             } while (cursor.moveToNext());
         }
@@ -119,8 +115,8 @@ public class SensorDatabase extends SQLiteOpenHelper {
     }
 
     /**
-     * Empties a single sensor table from the database
-     * @param sensorName name of the sensor
+     * Empties a single sensor table from the database.
+     * @param sensorName Name of the sensor
      */
     public void emptySensorTable(String sensorName) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -130,9 +126,8 @@ public class SensorDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //this can be empty, is not needed in this application uppgrade fiels
-        //dropTables();
-        //createTables(db);
+        dropTables();
+        createTables(db);
     }
 
     /**
@@ -150,7 +145,6 @@ public class SensorDatabase extends SQLiteOpenHelper {
         Log.d("SensorDatabase", "Dropping all tables");
         SQLiteDatabase db = this.getWritableDatabase();
         for (int i = 0; i < sensors.size(); i++) {
-            //db.delete("\"" + sensors.get(i).getName() + "\"", null, null);
             db.execSQL("DROP TABLE IF EXISTS " + "\"" + sensors.get(i).getName() + "\"");
         }
     }

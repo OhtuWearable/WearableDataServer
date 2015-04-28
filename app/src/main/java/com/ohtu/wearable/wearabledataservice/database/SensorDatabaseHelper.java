@@ -1,11 +1,11 @@
-package com.ohtu.wearable.wearabledataservice;
+package com.ohtu.wearable.wearabledataservice.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.hardware.Sensor;
 import android.util.Log;
 
-import com.ohtu.wearable.wearabledataservice.sensors.SensorDatabase;
+import com.ohtu.wearable.wearabledataservice.database.SensorDatabase;
 import com.ohtu.wearable.wearabledataservice.sensors.SensorUnit;
 import com.ohtu.wearable.wearabledataservice.sensors.SensorsHandler;
 
@@ -15,7 +15,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 /**
- * Helper class to create database and access it
+ * Helper class to create database and access the data in it. Currently drops all previous data when the servers start.
  */
 public class SensorDatabaseHelper {
     private SensorsHandler sensorsHandler;
@@ -28,18 +28,16 @@ public class SensorDatabaseHelper {
     }
 
     /**
-     * Starts the database; at the beginning it drops all tables and creates them again.
-     * @param context context
-     * @param sensors all sensors on device
+     * Starts the database; it drops all previously created tables and creates them again.
+     * @param context Context of the app
+     * @param sensors List of all sensors on device
      */
     public void startDatabase(Context context, List<Sensor> sensors) {
         if (db == null && sensors != null) {
             sensorDatabase = new SensorDatabase(context, sensors);
             this.sensors = sensors;
-            //drop old tables and create new ones:
+            /** drop old tables and create new ones: */
             sensorDatabase.restart();
-            //not-so-hard reset:
-            //sensorDatabase.deleteEntries();
             db = sensorDatabase.getWritableDatabase();
             Log.w("DB", "started");
         }
@@ -100,14 +98,10 @@ public class SensorDatabaseHelper {
         if (sensorName == null) {
             return null;
         }
-
-        Log.d("getJSONArray", sensorName);
         List<JSONObject> data = sensorDatabase.getAllSensorData(sensorName);
-        Log.d("JSONDATA", data.toString());
-
         JSONArray jsonArray = new JSONArray();
         for (JSONObject o : data) {
-           jsonArray.put(o);
+            jsonArray.put(o);
         }
         Log.d("JSONArray: ", jsonArray.toString());
         return jsonArray;

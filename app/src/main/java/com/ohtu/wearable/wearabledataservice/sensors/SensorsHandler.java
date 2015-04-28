@@ -3,10 +3,9 @@ package com.ohtu.wearable.wearabledataservice.sensors;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.util.Log;
 
 
-import com.ohtu.wearable.wearabledataservice.SensorDatabaseHelper;
+import com.ohtu.wearable.wearabledataservice.database.SensorDatabaseHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
