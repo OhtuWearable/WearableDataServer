@@ -8,13 +8,10 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.util.Log;
 
-import com.ohtu.wearable.wearabledataservice.SensorDatabaseHelper;
+import com.ohtu.wearable.wearabledataservice.database.SensorDatabaseHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Arrays;
-import java.util.Random;
 
 
 /**
@@ -31,7 +28,7 @@ public class SensorUnit implements SensorEventListener{
      */
     private Sensor sensor;
     /**
-     * Lol Ys dis heer, dunno :--) maybe there's gonna be some use eh?
+     *  Sensor's id number stored. Currently not accessed after assigning.
      */
     private int sensorId;
     /**

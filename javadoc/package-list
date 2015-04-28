@@ -1,4 +1,5 @@
 com.ohtu.wearable.wearabledataservice
+com.ohtu.wearable.wearabledataservice.database
 com.ohtu.wearable.wearabledataservice.fragments
 com.ohtu.wearable.wearabledataservice.list
 com.ohtu.wearable.wearabledataservice.sensors
